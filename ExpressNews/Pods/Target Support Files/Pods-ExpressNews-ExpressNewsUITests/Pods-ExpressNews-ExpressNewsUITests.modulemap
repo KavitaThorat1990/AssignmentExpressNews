@@ -1,0 +1,6 @@
+framework module Pods_ExpressNews_ExpressNewsUITests {
+  umbrella header "Pods-ExpressNews-ExpressNewsUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
