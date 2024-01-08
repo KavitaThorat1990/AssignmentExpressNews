@@ -72,6 +72,9 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="line.3.horizontal.decrease" catalog="system" title="Filter"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="Filter"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="filterButtonTapped" destination="Nqn-Af-Upj" eventType="touchUpInside" id="64e-LT-zZa"/>
                                 </connections>
@@ -189,6 +192,9 @@
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sJ8-jw-rct">
                                         <rect key="frame" x="0.0" y="0.0" width="157.33333333333334" height="729"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="categoriesTableView"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="Iq5-uw-MSY" id="ju5-eE-7IY"/>
                                             <outlet property="delegate" destination="Iq5-uw-MSY" id="FsR-Oe-kFx"/>
@@ -197,6 +203,9 @@
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tit-6o-o1F">
                                         <rect key="frame" x="158.33333333333337" y="0.0" width="234.66666666666663" height="729"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="optionsTableView"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="Iq5-uw-MSY" id="ccH-sh-Jjz"/>
                                             <outlet property="delegate" destination="Iq5-uw-MSY" id="mgX-Gc-iox"/>
@@ -218,12 +227,18 @@
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="LFW-bX-Dhb"/>
                                             <barButtonItem title="Apply" id="r1N-at-yfk">
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="Apply"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="applyFilterButtonTapped" destination="Iq5-uw-MSY" id="bQa-zE-vhB"/>
                                                 </connections>
                                             </barButtonItem>
                                             <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="mA1-eg-Z8p"/>
                                         </items>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="ClearAll"/>
+                                        </userDefinedRuntimeAttributes>
                                     </toolbar>
                                 </subviews>
                                 <constraints>

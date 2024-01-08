@@ -9,8 +9,16 @@ import UIKit
 
 class FilterViewController: UIViewController {
 
-    @IBOutlet private weak var categoriesTableView: UITableView!
-    @IBOutlet private weak var optionsTableView: UITableView!
+    @IBOutlet private weak var categoriesTableView: UITableView! {
+        didSet {
+            categoriesTableView.accessibilityIdentifier = "categoriesTableView"
+        }
+    }
+    @IBOutlet private weak var optionsTableView: UITableView! {
+        didSet {
+            optionsTableView.accessibilityIdentifier = "optionsTableView"
+        }
+    }
     var filterOptionsUpdated: (([String: [String]]) -> Void)?
     var viewModel: FilterViewModel!
 

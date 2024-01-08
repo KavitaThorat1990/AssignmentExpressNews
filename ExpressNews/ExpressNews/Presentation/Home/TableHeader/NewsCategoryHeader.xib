@@ -25,6 +25,7 @@
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1GO-CR-TBF">
                     <rect key="frame" x="301" y="16" width="80" height="35"/>
+                    <accessibility key="accessibilityConfiguration" identifier="SeeAll"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="80" id="8yb-ta-cuw"/>
                         <constraint firstAttribute="height" constant="35" id="rsc-5W-ViX"/>
