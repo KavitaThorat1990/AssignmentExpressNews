@@ -7,13 +7,17 @@
 
 import UIKit
 import PromiseKit
+import SwiftUI
 
 class HomeViewController: UIViewController {
     
-    @IBOutlet private weak var tableView: UITableView!
+    private let tableView: UITableView = {
+        let tableView = UITableView()
+        return tableView
+    }()
 
     var viewModel: HomeViewModel!
-    var featuredNewsCell: FeaturedNewsCell?
+    private var featuredNewsCell: FeaturedNewsCell?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +35,23 @@ class HomeViewController: UIViewController {
         super.viewWillDisappear(animated)
         featuredNewsCell?.stopAutoScroll()
     }
+    
     private func setupUI() {
+        //add search button
         addRightBarButtonItemToNavigationBar(systemItem: .search, actionSelector: #selector(searchButtonTapped))
-
+        
+        // Set up the table view
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.tableFooterView = UIView()
 
         // Configure cell registration for collection views and table views
@@ -48,13 +66,13 @@ class HomeViewController: UIViewController {
 
     private func loadData() {
         // Fetch data using promises
-        showIndicator()
+        showActivityIndicator()
         let fetchFeatured = viewModel.fetchFeaturedNews(parameters: [APIConstants.RequestParameters.country: Constants.defaultCountry, APIConstants.RequestParameters.pageSize: Constants.pageSizeForFeatured])
         let fetchTrending = viewModel.fetchTrendingNewsForCategories(parameters: [APIConstants.RequestParameters.country: Constants.defaultCountry, APIConstants.RequestParameters.pageSize: Constants.pageSizeForHome])
         
         when(fulfilled: fetchFeatured, fetchTrending)
             .ensure { [weak self] in
-                self?.hideIndicator()
+                self?.hideActivityIndicator()
             }
             .done { [weak self] (_, _) in
                 self?.updateUI()
@@ -70,14 +88,14 @@ class HomeViewController: UIViewController {
     }
     
     private func seeAllButtonTapped(for category: String) {
-        let newsListVC = NewsListViewController.instantiate()
+        let newsListVC = NewsListViewController()
         newsListVC.payload = [Constants.PayloadKeys.category: category]
 
         navigationController?.pushViewController(newsListVC, animated: true)
     }
     
     @objc func searchButtonTapped() {
-        let searchNewsVC = SearchNewsListViewController.instantiate()
+        let searchNewsVC = SearchNewsListViewController()
         navigationController?.pushViewController(searchNewsVC, animated: true)
     }
 }
@@ -132,7 +150,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     fileprivate func navigateToNewsDetails(_ news: NewsArticle) {
-        let detailsVC = NewsDetailsViewController.instantiate()
+        let detailsVC = NewsDetailsViewController()
         detailsVC.payload = [Constants.PayloadKeys.newsArticle: news]
         navigationController?.pushViewController(detailsVC, animated: true)
     }

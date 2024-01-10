@@ -18,7 +18,7 @@ class SearchNewsListViewController: NewsListViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
+        setupUI()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -26,14 +26,30 @@ class SearchNewsListViewController: NewsListViewController {
         searchBar.searchBar.becomeFirstResponder()
     }
     
-   override func configureUI() {
-       super.configureUI()
+   override func setupUI() {
+       view.backgroundColor = .white
        navigationItem.title = Constants.ScreenTitles.search
-        navigationItem.searchController = searchBar
-        searchBar.searchBar.delegate = self
-        searchBar.isActive = true
-        searchBar.searchBar.becomeFirstResponder()
        
+       view.addSubview(tableView)
+       tableView.translatesAutoresizingMaskIntoConstraints = false
+       NSLayoutConstraint.activate([
+           tableView.topAnchor.constraint(equalTo: view.topAnchor),
+           tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+           tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+           tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+       ])
+       
+       tableView.delegate = self
+       tableView.dataSource = self
+       
+       tableView.registerCell(cell: NewsCell.self)
+
+       navigationItem.searchController = searchBar
+       searchBar.searchBar.delegate = self
+       searchBar.isActive = true
+       searchBar.searchBar.becomeFirstResponder()
+       
+       super.setupActivityIndicator()
     }
     
     override func fetchNews(queryParam: [String : Any] = [:]) {

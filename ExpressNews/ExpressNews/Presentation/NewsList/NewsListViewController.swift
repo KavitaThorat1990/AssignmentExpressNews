@@ -9,14 +9,30 @@ import UIKit
 
 class NewsListViewController: UIViewController {
 
-   @IBOutlet private weak var sortButton: UIButton!
-   @IBOutlet private weak var filterButton: UIButton!
-   @IBOutlet private weak var tableView: UITableView!
+    private var sortButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle(Constants.ButtonTitles.sort, for: .normal)
+        button.setImage(UIImage(systemName: Constants.ImageNames.sort), for: .normal)
+        return button
+    }()
+    
+    private var filterButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle(Constants.ButtonTitles.filter, for: .normal)
+        button.setImage(UIImage(systemName: Constants.ImageNames.filter), for: .normal)
+        button.accessibilityIdentifier = Constants.AccessibilityIds.filterButton
+        return button
+    }()
+    
+    var tableView: UITableView = {
+        let tableView = UITableView()
+        return tableView
+    }()
   
    private var sortActionSheet: UIAlertController?
    private var activityIndicator: UIActivityIndicatorView!
 
-    private let filterViewController = FilterViewController.instantiate()
+    private let filterViewController = FilterViewController()
 
    var viewModel: NewsListViewModel!
    var payload: [String: Any] = [:]
@@ -24,17 +40,56 @@ class NewsListViewController: UIViewController {
    override func viewDidLoad() {
        super.viewDidLoad()
        setupViewModel()
-       configureUI()
+       setupUI()
        fetchNews()
    }
 
-   func configureUI() {
+    func setupActivityIndicator() {
+        // Set up activity indicator
+        activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.hidesWhenStopped = true
+        tableView.tableFooterView = activityIndicator
+    }
+    
+    func setupUI() {
        navigationItem.title  = Constants.ScreenTitles.newsList
+       view.backgroundColor = .white
+
+       view.addSubview(sortButton)
+       sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
+       sortButton.translatesAutoresizingMaskIntoConstraints = false
+       NSLayoutConstraint.activate([
+           sortButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+           sortButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
+           sortButton.widthAnchor.constraint(equalToConstant: 80),
+           sortButton.heightAnchor.constraint(equalToConstant: 40)
+       ])
+
+       view.addSubview(filterButton)
+       filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+       filterButton.translatesAutoresizingMaskIntoConstraints = false
+       NSLayoutConstraint.activate([
+           filterButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+           filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
+           filterButton.widthAnchor.constraint(equalToConstant: 80),
+           filterButton.heightAnchor.constraint(equalToConstant: 40)
+       ])
+
+       view.addSubview(tableView)
+       tableView.translatesAutoresizingMaskIntoConstraints = false
+       NSLayoutConstraint.activate([
+           tableView.topAnchor.constraint(equalTo: sortButton.bottomAnchor, constant: 5),
+           tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+           tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+           tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+       ])
+
+       tableView.delegate = self
+       tableView.dataSource = self
+       
        tableView.registerCell(cell: NewsCell.self)
-       // Set up activity indicator
-       activityIndicator = UIActivityIndicatorView(style: .medium)
-       activityIndicator.hidesWhenStopped = true
-       tableView.tableFooterView = activityIndicator
+       
+       setupActivityIndicator()
    }
 
    private func setupViewModel() {
@@ -62,7 +117,6 @@ class NewsListViewController: UIViewController {
 
 }
 
-
 extension NewsListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.newsArticles.count ?? 0
@@ -80,7 +134,7 @@ extension NewsListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailsVC = NewsDetailsViewController.instantiate()
+        let detailsVC = NewsDetailsViewController()
         let newsArticle = viewModel.newsArticles[indexPath.row]
         detailsVC.payload = [Constants.PayloadKeys.newsArticle: newsArticle]
         navigationController?.pushViewController(detailsVC, animated: true)
@@ -101,7 +155,7 @@ extension NewsListViewController {
 
 extension NewsListViewController {
     
-   @IBAction private func sortButtonTapped() {
+   @objc private func sortButtonTapped() {
        if sortActionSheet == nil {
            createSortActionSheet()
        }
@@ -109,7 +163,7 @@ extension NewsListViewController {
        present(sortActionSheet!, animated: true, completion: nil)
    }
 
-    @IBAction func filterButtonTapped() {
+    @objc func filterButtonTapped() {
         // Set the callback closure to receive selected options
         filterViewController.filterOptionsUpdated = { [weak self] selectedOptions in
             self?.viewModel.selectedFilterOptions = selectedOptions

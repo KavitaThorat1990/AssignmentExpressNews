@@ -5,6 +5,7 @@
 //  Created by Kavita Thorat on 05/01/24.
 //
 
+import Foundation
 import PromiseKit
 
 class MockNewsUseCase: NewsUseCase {

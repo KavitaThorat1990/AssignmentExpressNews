@@ -5,6 +5,7 @@
 //  Created by Kavita Thorat on 30/12/23.
 //
 
+import Foundation
 import PromiseKit
 
 class APIClient {

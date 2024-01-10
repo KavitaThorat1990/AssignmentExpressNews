@@ -8,24 +8,39 @@
 import UIKit
 
 class FilterViewController: UIViewController {
+    
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        return view
+    }()
 
-    @IBOutlet private weak var categoriesTableView: UITableView! {
-        didSet {
-            categoriesTableView.accessibilityIdentifier = "categoriesTableView"
-        }
-    }
-    @IBOutlet private weak var optionsTableView: UITableView! {
-        didSet {
-            optionsTableView.accessibilityIdentifier = "optionsTableView"
-        }
-    }
+    private var categoriesTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .white
+        tableView.accessibilityIdentifier = Constants.AccessibilityIds.categoryTable
+        return tableView
+    }()
+    
+    private var optionsTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .white
+        tableView.accessibilityIdentifier = Constants.AccessibilityIds.optionTable
+        return tableView
+    }()
+    
+    private let bottomToolbar: UIToolbar = {
+        let toolbar = UIToolbar()
+        return toolbar
+    }()
+
     var filterOptionsUpdated: (([String: [String]]) -> Void)?
     var viewModel: FilterViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewModel()
-        setupTableViews()
+        setupUI()
     }
 
     func setupViewModel() {
@@ -35,7 +50,52 @@ class FilterViewController: UIViewController {
         }
     }
     
-    private func setupTableViews() {
+    private func setupUI() {
+        
+        view.backgroundColor = .white
+
+        view.addSubview(containerView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(bottomToolbar)
+        bottomToolbar.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomToolbar.topAnchor)
+        ])
+
+        containerView.addSubview(categoriesTableView)
+        categoriesTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            categoriesTableView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            categoriesTableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            categoriesTableView.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.4),
+            categoriesTableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+
+        containerView.addSubview(optionsTableView)
+        optionsTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            optionsTableView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            optionsTableView.leadingAnchor.constraint(equalTo: categoriesTableView.trailingAnchor, constant: 1.0),
+            optionsTableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            optionsTableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+
+        NSLayoutConstraint.activate([
+            bottomToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        let clearAllButton = UIBarButtonItem(title: Constants.ButtonTitles.clearAll, style: .plain, target: self, action: #selector(clearAllButtonTapped))
+        let applyButton = UIBarButtonItem(title: Constants.ButtonTitles.apply, style: .plain, target: self, action: #selector(applyFilterButtonTapped))
+
+        bottomToolbar.items = [clearAllButton, UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), applyButton]
+
         categoriesTableView.delegate = self
         categoriesTableView.dataSource = self
 
@@ -84,7 +144,7 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension FilterViewController {
-    @IBAction func applyFilterButtonTapped() {
+    @objc func applyFilterButtonTapped() {
         let selectedOptions = viewModel.getSelectedOptions()
 
         // Notify the callback closure with selected options
@@ -93,7 +153,7 @@ extension FilterViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func clearAllButtonTapped() {
+    @objc func clearAllButtonTapped() {
         viewModel.clearAllFilters()
     }
 }

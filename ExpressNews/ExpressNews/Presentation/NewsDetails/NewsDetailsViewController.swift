@@ -8,7 +8,11 @@
 import UIKit
 
 class NewsDetailsViewController: UIViewController {
-    @IBOutlet private weak var tableView: UITableView!
+    private var tableView: UITableView = {
+        let tableView = UITableView()
+        return tableView
+    }()
+    
     var viewModel: NewsDetailsViewModel = NewsDetailsViewModel()
     var payload: [String: Any] = [:] {
         didSet {
@@ -18,10 +22,24 @@ class NewsDetailsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTableView()
+        setupUI()
     }
 
-    private func configureTableView() {
+    private func setupUI() {
+        view.backgroundColor = .white
+        // Set up the table view
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
         tableView.tableFooterView = UIView()
         tableView.registerCell(cell: NewsDetailsCell.self)
         tableView.rowHeight = UITableView.automaticDimension

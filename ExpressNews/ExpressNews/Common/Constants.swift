@@ -36,6 +36,23 @@ struct Constants {
     
     struct ButtonTitles {
         static let cancel = "Cancel"
+        static let filter = "Filter"
+        static let sort = "Sort"
+        static let clearAll = "Clear All"
+        static let apply = "Apply"
+        static let seeAll = "See All"
+    }
+    
+    struct AccessibilityIds {
+        static let optionTable = "optionsTableView"
+        static let categoryTable = "categoriesTableView"
+        static let seeAllButton = "SeeAll"
+        static let filterButton = "Filter"
+    }
+    
+    struct ImageNames {
+        static let filter = "line.3.horizontal.decrease"
+        static let sort = "arrow.down.and.line.horizontal.and.arrow.up"
     }
     
     struct PayloadKeys {
