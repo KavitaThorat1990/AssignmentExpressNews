@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = HomeViewModel(newsUseCase: MockNewsAPI())
+        viewModel = HomeViewModel()
         setupUI()
         loadData()
     }
