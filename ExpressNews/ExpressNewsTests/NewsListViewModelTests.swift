@@ -50,7 +50,7 @@ final class NewsListViewModelTests: XCTestCase {
 
         viewModel.fetchNews()
             .done { trendingNews in
-                XCTAssertEqual(trendingNews.count, 5) // Adjust based on your mock data
+                XCTAssertEqual(trendingNews.count, 5)
                 expectation.fulfill()
             }
             .catch { error in

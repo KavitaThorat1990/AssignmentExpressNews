@@ -26,6 +26,7 @@ struct NewsCategoryHeader: View {
                     .font(.subheadline)
                     .foregroundColor(.blue)
             }
+            .accessibilityIdentifier(Constants.AccessibilityIds.seeAllButton)
         }
         .padding(.vertical, 10)
     }

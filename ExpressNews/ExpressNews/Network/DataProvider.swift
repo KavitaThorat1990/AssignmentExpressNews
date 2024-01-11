@@ -10,7 +10,7 @@ import PromiseKit
 
 class DataProvider {
 
-    func loadCategories<T: Codable>(from fileName: String) -> Promise<T> {
+    static func loadJSONFile<T: Codable>(from fileName: String) -> Promise<T> {
         return Promise { seal in
             guard let path = Bundle.main.path(forResource: fileName, ofType: "json") else {
                 seal.reject(APIError.invalidResource)

@@ -23,12 +23,14 @@ final class FilterViewModel {
     var categories: [FilterCategory] = []
     var selectedCategoryIndex = 0
     var filterOptionsUpdated: (() -> Void)?
+    var filterOptionsLoaded: (() -> Void)?
+
     let filterOptionsUseCase: FilterOptionsUseCase
 
-       init(filterOptionsUseCase: FilterOptionsUseCase = FilterOptionsAPI()) {
-           self.filterOptionsUseCase = filterOptionsUseCase
-           setupCategories()
-       }
+    init(filterOptionsUseCase: FilterOptionsUseCase = FilterOptionsAPI()) {
+        self.filterOptionsUseCase = filterOptionsUseCase
+        setupCategories()
+    }
 
     func setupCategories() {
            // Load categories dynamically using FilterOptionsUseCase
@@ -98,6 +100,7 @@ final class FilterViewModel {
         when(fulfilled: promises)
             .done { [weak self] in
                 self?.filterOptionsUpdated?()
+                self?.filterOptionsLoaded?()
             }
     }
 

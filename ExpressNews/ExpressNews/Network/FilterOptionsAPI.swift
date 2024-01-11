@@ -11,11 +11,9 @@ import PromiseKit
 class FilterOptionsAPI: FilterOptionsUseCase {
 
     private let apiClient: APIClient
-    private let dataProvider: DataProvider
 
-    init(apiClient: APIClient = APIClient.shared, dataProvider: DataProvider = DataProvider()) {
+    init(apiClient: APIClient = APIClient.shared) {
         self.apiClient = apiClient
-        self.dataProvider = dataProvider
     }
 
     func fetchSources() -> Promise<SourcesResponse> {
@@ -23,17 +21,17 @@ class FilterOptionsAPI: FilterOptionsUseCase {
     }
 
     func loadCountries() -> Promise<[Country]> {
-        return dataProvider.loadCategories(from: APIConstants.LocalJson.countries)
+        return DataProvider.loadJSONFile(from: APIConstants.LocalJson.countries)
     }
 
     func loadLanguages() -> Promise<[Language]> {
-        return dataProvider.loadCategories(from:  APIConstants.LocalJson.languages)
+        return DataProvider.loadJSONFile(from:  APIConstants.LocalJson.languages)
     }
     func loadCategories() -> Promise<[String]> {
-        return dataProvider.loadCategories(from:  APIConstants.LocalJson.categories)
+        return DataProvider.loadJSONFile(from:  APIConstants.LocalJson.categories)
     }
     func loadFilterCategories() -> Promise<[String]> {
-        return dataProvider.loadCategories(from:  APIConstants.LocalJson.filterCatgories)
+        return DataProvider.loadJSONFile(from:  APIConstants.LocalJson.filterCatgories)
     }
 
 }

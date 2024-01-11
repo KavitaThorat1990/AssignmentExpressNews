@@ -10,9 +10,7 @@ import PromiseKit
 
 final class HomeViewModel {
     var featuredNews: [NewsArticle] = []
-    
     var categories: [String] = Constants.defaultCategories
-    var trendingNews: [NewsArticle] = []
     var categorisedNews: [String: [NewsArticle]] = [:]
 
     private let newsUseCase: NewsUseCase

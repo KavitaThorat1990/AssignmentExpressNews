@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class FeaturedNewsCell: UITableViewCell, NibRegister {
+class FeaturedNewsCell: UITableViewCell {
     private var featuredNews: [NewsArticle] = []
     private var timer: Timer?
     var openNewsDetails: ((NewsArticle) -> Void)?
