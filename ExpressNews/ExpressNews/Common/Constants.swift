@@ -9,7 +9,7 @@ import Foundation
 
 struct Constants {
     
-    static let defaultCategories = ["Sports"] //, "Entertainment", "Technology", "Business", "Science", "Health", "General"]
+    static let defaultCategories = ["Sports", "Entertainment"] //, "Entertainment", "Technology", "Business", "Science", "Health", "General"]
     static let pageSizeForFeatured = 10
     static let pageSizeForHome = 5
     static let pageSizeForNewsList = 20
@@ -18,13 +18,18 @@ struct Constants {
     
     struct CellHeights {
         static let featuredCell = 200.0
-        static let newsCell = 80.0
+        static let newsCell = 120.0
         static let categoryHeader = 44.0
     }
     
     struct CellIds {
         static let categoryCell = "CategoryCell"
         static let optionCell = "OptionCell"
+        static let newsCell = "NewsCell"
+        static let featuredNewsItemCell = "FeaturedNewsItemCell"
+        static let newsCategoryHeader = "NewsCategoryHeader"
+        static let featuredNewsCell = "FeaturedNewsCell"
+        static let newsDetailsCell = "NewsDetailsCell"        
     }
     
     struct ScreenTitles {
@@ -41,6 +46,7 @@ struct Constants {
         static let clearAll = "Clear All"
         static let apply = "Apply"
         static let seeAll = "See All"
+        static let seeMore = "See More"
     }
     
     struct AccessibilityIds {

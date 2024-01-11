@@ -19,7 +19,7 @@ struct FilterCategory {
     var options: [FilterOption]
 }
 
-class FilterViewModel {
+final class FilterViewModel {
     var categories: [FilterCategory] = []
     var selectedCategoryIndex = 0
     var filterOptionsUpdated: (() -> Void)?

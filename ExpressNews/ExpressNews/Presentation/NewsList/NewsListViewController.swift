@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class NewsListViewController: UIViewController {
 
@@ -87,8 +88,8 @@ class NewsListViewController: UIViewController {
        tableView.delegate = self
        tableView.dataSource = self
        
-       tableView.registerCell(cell: NewsCell.self)
-       
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.CellIds.newsCell)
+
        setupActivityIndicator()
    }
 
@@ -123,9 +124,20 @@ extension NewsListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueCell(cell: NewsCell.self, for: indexPath)
-        let newsArticle = viewModel.newsArticles[indexPath.row]
-        cell.configure(with: newsArticle)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIds.newsCell) else {
+            return UITableViewCell()
+        }
+        let news = viewModel.newsArticles[indexPath.row]
+        if #available(iOS 16.0, *) {
+            cell.contentConfiguration = UIHostingConfiguration(content: {
+                NewsCell(news: news)
+            })
+           } else {
+               cell.contentConfiguration = HostingContentConfiguration {
+                   NewsCell(news: news)
+                       .padding()
+               }
+           }
         return cell
     }
     
@@ -134,6 +146,7 @@ extension NewsListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let detailsVC = NewsDetailsViewController()
         let newsArticle = viewModel.newsArticles[indexPath.row]
         detailsVC.payload = [Constants.PayloadKeys.newsArticle: newsArticle]

@@ -6,23 +6,59 @@
 //
 
 import UIKit
+import SwiftUI
 
 class FeaturedNewsCell: UITableViewCell, NibRegister {
     private var featuredNews: [NewsArticle] = []
     private var timer: Timer?
     var openNewsDetails: ((NewsArticle) -> Void)?
     
-    @IBOutlet private weak var collectionView: UICollectionView!
-    @IBOutlet private weak var pageControl: UIPageControl!
+    private var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
+        return collectionView
+    }()
+    
+    private var pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.currentPageIndicatorTintColor = .systemBlue
+        pageControl.pageIndicatorTintColor = .systemGray
+        return pageControl
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func setupUI() {
-        collectionView.isPagingEnabled = true
-        collectionView.registerCell(cell: FeaturedNewsItemCell.self)
+        contentView.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(pageControl)
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+                collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
+                collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                collectionView.heightAnchor.constraint(equalToConstant: 200),
+
+                pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 8),
+                pageControl.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            ])
+
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.CellIds.featuredNewsItemCell)
         pageControl.numberOfPages = featuredNews.count
     }
 
@@ -73,8 +109,16 @@ extension FeaturedNewsCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueCell(cell: FeaturedNewsItemCell.self, for: indexPath)
-        cell.configure(with: featuredNews[indexPath.item])
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.CellIds.featuredNewsItemCell, for: indexPath) 
+        if #available(iOS 16.0, *) {
+            cell.contentConfiguration = UIHostingConfiguration(content: {
+                FeaturedNewsItemCell(news: featuredNews[indexPath.item])
+            })
+        } else {
+            cell.contentConfiguration = HostingContentConfiguration{
+                FeaturedNewsItemCell(news: featuredNews[indexPath.item])
+            }
+        }
         return cell
     }
 }

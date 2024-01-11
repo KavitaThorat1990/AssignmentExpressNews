@@ -5,30 +5,47 @@
 //  Created by Kavita Thorat on 31/12/23.
 //
 
-import UIKit
 import SDWebImage
+import SDWebImageSwiftUI
+import SwiftUI
 
-class NewsCell: UITableViewCell, NibRegister {
+struct NewsCell: View {
+    var news: NewsArticle
 
-    @IBOutlet private weak var logoImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
+    var body: some View {
+        HStack(alignment: .top, spacing: 8) {
+            // Image View
+            if let imageUrl = news.imageUrl {
+                WebImage(url: imageUrl)
+                    .placeholder(Image(systemName: "photo"))
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 80, height: 80)
+                    .cornerRadius(8)
+            } else {
+                Image(systemName: "photo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 80, height: 80)
+                    .cornerRadius(8)
+                    .foregroundColor(.gray)
+            }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
-    func configure(with news: NewsArticle) {
-        titleLabel.text = news.title
-        if let url = news.imageUrl {
-            logoImageView.sd_setImage(with: url)
+            VStack(alignment: .leading, spacing: 5) {
+                Text(news.title)
+                    .font(.headline)
+                    .foregroundColor(.black)
+                    .lineLimit(3)
+                Text(news.authorAndSource)
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .lineLimit(1)
+            }
         }
+        .padding(0)
     }
-    
+}
+
+#Preview {
+    NewsCell(news: NewsArticle(source: ArticleSource(id: "the-washington-post", name: "The Washington Post"), author: "Jonathan Edwards", title: "13-year-old becomes first known person to ‘beat’ Tetris - The Washington Post", description: "Willis Gibson, 13, became the first person known to have beat “Tetris” by getting so far into the game he made it freeze.", url: "https://www.washingtonpost.com/nation/2024/01/04/13-year-old-beats-tetris/", urlToImage: "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://d1i4t8bqe7zgj6.cloudfront.net/01-05-2024/t_01e058b5fa3f40aa8666709c2fa9fbbc_name_nintendo.jpg&w=1440", publishedAt: "2024-01-05T05:44:15Z", content: "Comment on this story\r\nComment\r\nAdd to your saved stories\r\nSave\r\nWillis Gibson spent more than a half-hour on Dec. 21 commanding a seemingly endless waterfall of blocks as they shot down his screen a… [+5348 chars]"))
 }

@@ -13,6 +13,7 @@ class HomeViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
+        tableView.backgroundColor = .systemGroupedBackground
         return tableView
     }()
 
@@ -37,6 +38,7 @@ class HomeViewController: UIViewController {
     }
     
     private func setupUI() {
+        navigationItem.title = Constants.ScreenTitles.home
         //add search button
         addRightBarButtonItemToNavigationBar(systemItem: .search, actionSelector: #selector(searchButtonTapped))
         
@@ -55,10 +57,11 @@ class HomeViewController: UIViewController {
         tableView.tableFooterView = UIView()
 
         // Configure cell registration for collection views and table views
-        tableView.registerCell(cell: FeaturedNewsCell.self)
-        tableView.registerCell(cell: NewsCell.self)
-        tableView.registerHeaderFooterView(cell: NewsCategoryHeader.self)
-        featuredNewsCell = tableView.dequeueCell(cell: FeaturedNewsCell.self, for: IndexPath(row: 0, section: 0))
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.CellIds.newsCell)
+        tableView.register(FeaturedNewsCell.self, forCellReuseIdentifier: Constants.CellIds.featuredNewsCell)
+
+        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Constants.CellIds.newsCategoryHeader)
+        featuredNewsCell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIds.featuredNewsCell) as? FeaturedNewsCell
         featuredNewsCell?.openNewsDetails = {[weak self] news in
             self?.navigateToNewsDetails(news)
         }
@@ -120,9 +123,21 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             featuredNewsCell?.configure(with: viewModel.featuredNews)
             return featuredNewsCell ?? UITableViewCell()
         } else {
-            let cell = tableView.dequeueCell(cell: NewsCell.self, for: indexPath)
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIds.newsCell) else {
+                return UITableViewCell()
+            }
             let news = viewModel.getNewsForSection(section: indexPath.section)[indexPath.row]
-            cell.configure(with: news)
+            if #available(iOS 16.0, *) {
+                cell.contentConfiguration = UIHostingConfiguration(content: {
+                    NewsCell(news: news)
+                })
+               } else {
+                   cell.contentConfiguration = HostingContentConfiguration {
+                       NewsCell(news: news)
+                           .padding()
+                           .frame(height: 100)
+                   }
+               }
             return cell
         }
     }
@@ -131,15 +146,29 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 0 {
             return Constants.CellHeights.featuredCell
         } else {
-            return  Constants.CellHeights.newsCell
+            return Constants.CellHeights.newsCell
         }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
        if section != 0 {
-           let headerView = tableView.dequeueHeaderFooter(NewsCategoryHeader.self)
-           headerView.titleLabel.text = viewModel.categories[section - 1]
-           headerView.seeAllButton.addTarget(self, action: #selector(seeAllButtonTapped(sender:)), for: .touchUpInside)
+           guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.CellIds.newsCategoryHeader) else {
+               return nil
+           }
+           let category = viewModel.categories[section - 1]
+           let newsHeader = NewsCategoryHeader(title: category) { [weak self] in
+               self?.seeAllButtonTapped(for: category)
+           }
+           
+           if #available(iOS 16.0, *) {
+               headerView.contentConfiguration = UIHostingConfiguration(content: {
+                   newsHeader
+               })
+           } else {
+               headerView.contentConfiguration = HostingContentConfiguration {
+                   newsHeader
+               }
+           }
            return headerView
        }
        return nil
@@ -157,16 +186,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section != 0 {
+            tableView.deselectRow(at: indexPath, animated: true)
             let news = viewModel.getNewsForSection(section: indexPath.section)[indexPath.row]
             navigateToNewsDetails(news)
         }
-    }
-    
-    @objc func seeAllButtonTapped(sender: UIButton) {
-       guard let header = sender.superview as? NewsCategoryHeader else {
-           return
-       }
-       let category = header.titleLabel.text ?? ""
-       seeAllButtonTapped(for: category)
     }
 }

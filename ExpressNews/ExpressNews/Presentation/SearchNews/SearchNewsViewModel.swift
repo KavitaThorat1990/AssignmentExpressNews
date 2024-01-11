@@ -7,7 +7,7 @@
 
 import PromiseKit
 
-class SearchNewsViewModel: NewsListViewModel {
+final class SearchNewsViewModel: NewsListViewModel {
     var selectedQuery: String = ""
     
     override func getAPIParameters() -> [String : Any] {

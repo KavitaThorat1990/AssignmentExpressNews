@@ -8,7 +8,7 @@
 import Foundation
 import PromiseKit
 
-class HomeViewModel {
+final class HomeViewModel {
     var featuredNews: [NewsArticle] = []
     
     var categories: [String] = Constants.defaultCategories

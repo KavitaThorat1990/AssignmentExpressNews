@@ -41,8 +41,7 @@ class SearchNewsListViewController: NewsListViewController {
        
        tableView.delegate = self
        tableView.dataSource = self
-       
-       tableView.registerCell(cell: NewsCell.self)
+       tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.CellIds.newsCell)
 
        navigationItem.searchController = searchBar
        searchBar.searchBar.delegate = self

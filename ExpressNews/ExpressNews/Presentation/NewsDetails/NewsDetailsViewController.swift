@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class NewsDetailsViewController: UIViewController {
     private var tableView: UITableView = {
@@ -41,7 +42,7 @@ class NewsDetailsViewController: UIViewController {
         tableView.dataSource = self
         
         tableView.tableFooterView = UIView()
-        tableView.registerCell(cell: NewsDetailsCell.self)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "NewsDetailsCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
     }
@@ -60,11 +61,22 @@ extension NewsDetailsViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueCell(cell: NewsDetailsCell.self, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsDetailsCell") else {
+            return UITableViewCell()
+        }
         if let newsArticle = viewModel.newsArticle {
-            cell.configure(with: newsArticle)
-            cell.openNewsURLClosure = {[weak self] in
+            
+            let detailsCell = NewsDetailsCell(newsArticle: newsArticle) { [weak self] in
                 self?.openNewsURL()
+            }
+            if #available(iOS 16.0, *) {
+                cell.contentConfiguration = UIHostingConfiguration(content: {
+                    detailsCell
+                })
+            } else {
+                cell.contentConfiguration = HostingContentConfiguration {
+                    detailsCell
+                }
             }
         }
         return cell

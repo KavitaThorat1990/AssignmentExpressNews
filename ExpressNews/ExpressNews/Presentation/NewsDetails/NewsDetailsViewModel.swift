@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NewsDetailsViewModel {
+final class NewsDetailsViewModel {
     var newsArticle: NewsArticle?
     var updateUI: (() -> Void)?
     
