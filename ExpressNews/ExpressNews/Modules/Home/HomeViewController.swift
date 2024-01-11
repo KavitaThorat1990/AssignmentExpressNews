@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = HomeViewModel()
+        viewModel = HomeViewModel(newsUseCase: MockNewsAPI())
         setupUI()
         loadData()
     }
@@ -62,6 +62,7 @@ class HomeViewController: UIViewController {
 
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Constants.CellIds.newsCategoryHeader)
         featuredNewsCell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIds.featuredNewsCell) as? FeaturedNewsCell
+        featuredNewsCell?.payload = [Constants.PayloadKeys.newsList: viewModel.featuredNews]
         featuredNewsCell?.openNewsDetails = {[weak self] news in
             self?.navigateToNewsDetails(news)
         }

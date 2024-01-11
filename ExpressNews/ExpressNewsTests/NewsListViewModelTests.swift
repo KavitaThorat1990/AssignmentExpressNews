@@ -9,11 +9,11 @@ import XCTest
 
 final class NewsListViewModelTests: XCTestCase {
     var viewModel: NewsListViewModel!
-    var mockNewsUseCase: MockNewsUseCase!
+    var mockNewsUseCase: MockNewsAPI!
 
     override func setUp() {
         super.setUp()
-        mockNewsUseCase = MockNewsUseCase()
+        mockNewsUseCase = MockNewsAPI()
         viewModel = NewsListViewModel(newsUseCase: mockNewsUseCase)
     }
 

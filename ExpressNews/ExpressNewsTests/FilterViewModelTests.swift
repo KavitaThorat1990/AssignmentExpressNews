@@ -11,12 +11,12 @@ final class FilterViewModelTests: XCTestCase {
     
     
     var viewModel: FilterViewModel!
-    var mockFilterOptionsUseCase: MockFilterOptionsUseCase!
+    var mockFilterOptionsUseCase: MockFilterOptionsAPI!
 
 
     override func setUp() {
         super.setUp()
-        mockFilterOptionsUseCase = MockFilterOptionsUseCase()
+        mockFilterOptionsUseCase = MockFilterOptionsAPI()
         viewModel = FilterViewModel(filterOptionsUseCase: mockFilterOptionsUseCase)
     }
     

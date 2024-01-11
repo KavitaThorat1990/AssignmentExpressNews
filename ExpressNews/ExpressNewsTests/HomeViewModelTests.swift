@@ -10,11 +10,11 @@ import XCTest
 final class HomeViewModelTests: XCTestCase {
 
     var viewModel: HomeViewModel!
-    var mockNewsUseCase: MockNewsUseCase!
+    var mockNewsUseCase: MockNewsAPI!
 
     override func setUp() {
         super.setUp()
-        mockNewsUseCase = MockNewsUseCase()
+        mockNewsUseCase = MockNewsAPI()
         viewModel = HomeViewModel(newsUseCase: mockNewsUseCase)
     }
 

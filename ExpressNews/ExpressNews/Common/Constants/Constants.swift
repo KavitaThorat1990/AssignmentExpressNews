@@ -64,6 +64,7 @@ struct Constants {
     struct PayloadKeys {
         static let category = "category"
         static let newsArticle = "newsArticle"
+        static let newsList = "newsArticles"
     }
     
     struct FilterCategories {
