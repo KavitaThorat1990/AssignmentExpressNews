@@ -47,8 +47,8 @@ class APIClient {
 
                 do {
                     let decoder = JSONDecoder()
-                    var backToString = String(data: data, encoding: String.Encoding.utf8)
-                    print(backToString)
+//                    var backToString = String(data: data, encoding: String.Encoding.utf8)
+//                    print(backToString)
                     let result = try decoder.decode(T.self, from: data)
                     seal.fulfill(result)
                 } catch {

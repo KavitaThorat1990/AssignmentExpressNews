@@ -30,7 +30,7 @@ class FilterViewController: UIViewController {
     }()
     
     private let bottomToolbar: UIToolbar = {
-        let toolbar = UIToolbar()
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
         return toolbar
     }()
 
@@ -64,7 +64,12 @@ class FilterViewController: UIViewController {
             containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomToolbar.topAnchor)
+            containerView.bottomAnchor.constraint(equalTo: bottomToolbar.topAnchor),
+            
+            bottomToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomToolbar.heightAnchor.constraint(equalToConstant: 44),
+            bottomToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
 
         containerView.addSubview(categoriesTableView)
@@ -85,11 +90,6 @@ class FilterViewController: UIViewController {
             optionsTableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
 
-        NSLayoutConstraint.activate([
-            bottomToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bottomToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
         
         let clearAllButton = UIBarButtonItem(title: Constants.ButtonTitles.clearAll, style: .plain, target: self, action: #selector(clearAllButtonTapped))
         let applyButton = UIBarButtonItem(title: Constants.ButtonTitles.apply, style: .plain, target: self, action: #selector(applyFilterButtonTapped))
