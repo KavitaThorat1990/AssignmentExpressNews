@@ -94,7 +94,7 @@ class NewsListViewController: UIViewController {
    }
 
    private func setupViewModel() {
-       viewModel = NewsListViewModel()
+       viewModel = NewsListViewModel(newsUseCase: MockNewsAPI())
        viewModel.configure(payload: payload)
    }
 
@@ -128,13 +128,14 @@ extension NewsListViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         let news = viewModel.newsArticles[indexPath.row]
+        let newsCell = NewsCell(cellViewModel: NewsCellViewModel(news: news))
         if #available(iOS 16.0, *) {
             cell.contentConfiguration = UIHostingConfiguration(content: {
-                NewsCell(news: news)
+                newsCell
             })
            } else {
                cell.contentConfiguration = HostingContentConfiguration {
-                   NewsCell(news: news)
+                   newsCell
                        .padding()
                }
            }

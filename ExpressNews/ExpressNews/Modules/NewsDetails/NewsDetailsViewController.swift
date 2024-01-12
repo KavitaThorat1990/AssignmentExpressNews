@@ -27,9 +27,9 @@ class NewsDetailsViewController: UIViewController {
             return
         }
         // 1
-        let vc = UIHostingController(rootView: NewsDetailView(newsArticle: news, openNewsURLClosure: { [weak self] in
+        let vc = UIHostingController(rootView: NewsDetailView(viewModel: NewsDetailsViewModel(newsArticle: news, openNewsURLClosure: { [weak self] in
             self?.openNewsURL()
-        }))
+        })))
 
         let newsDetailsView = vc.view!
         newsDetailsView.translatesAutoresizingMaskIntoConstraints = false

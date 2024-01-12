@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = HomeViewModel()
+        viewModel = HomeViewModel(newsUseCase: MockNewsAPI())
         setupUI()
         loadData()
     }
@@ -128,15 +128,14 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 return UITableViewCell()
             }
             let news = viewModel.getNewsForSection(section: indexPath.section)[indexPath.row]
+            let newsCell = NewsCell(cellViewModel: NewsCellViewModel(news: news))
             if #available(iOS 16.0, *) {
                 cell.contentConfiguration = UIHostingConfiguration(content: {
-                    NewsCell(news: news)
+                    newsCell
                 })
                } else {
                    cell.contentConfiguration = HostingContentConfiguration {
-                       NewsCell(news: news)
-                           .padding()
-                           .frame(height: 100)
+                       newsCell
                    }
                }
             return cell

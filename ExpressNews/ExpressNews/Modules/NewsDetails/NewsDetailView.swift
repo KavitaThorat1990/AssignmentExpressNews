@@ -9,25 +9,24 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct NewsDetailView: View {
-    var newsArticle: NewsArticle
-    var openNewsURLClosure: (() -> Void)?
+    var viewModel: NewsDetailsViewModel
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
-                Text(newsArticle.title)
+                Text(viewModel.newsArticle?.title ?? "")
                     .font(.headline)
                     .lineLimit(nil)
                 
-                Text(newsArticle.authorAndSource)
+                Text(viewModel.newsArticle?.authorAndSource ?? "")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-                Text(newsArticle.updatedAt)
+                Text(viewModel.newsArticle?.updatedAt ?? "")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-                if let imageUrl = newsArticle.imageUrl {
+                if let imageUrl = viewModel.newsArticle?.imageUrl {
                     WebImage(url: imageUrl)
                         .placeholder(Image(systemName: "photo"))
                         .resizable()
@@ -38,14 +37,14 @@ struct NewsDetailView: View {
                         .padding(.vertical, 8)
                 }
 
-                if let description = newsArticle.description {
+                if let description = viewModel.newsArticle?.description {
                     Text(description)
                         .font(.body)
                         .foregroundColor(.primary)
                         .lineLimit(nil)
                 }
                 
-                if let content = newsArticle.content {
+                if let content = viewModel.newsArticle?.content {
                     Text(content)
                         .font(.body)
                         .foregroundColor(.primary)
@@ -55,7 +54,7 @@ struct NewsDetailView: View {
                 HStack {
                     Spacer()
                     Button(Constants.ButtonTitles.seeMore) {
-                        openNewsURLClosure?()
+                        viewModel.openNewsURLClosure?()
                     }
                     .foregroundColor(.blue)
                     .padding(.top, 8)
@@ -69,5 +68,5 @@ struct NewsDetailView: View {
 }
 
 #Preview {
-    NewsDetailView(newsArticle: NewsArticle(source: ArticleSource(id: "the-washington-post", name: "The Washington Post"), author: "Jonathan Edwards", title: "13-year-old becomes first known person to ‘beat’ Tetris - The Washington Post", description: "Willis Gibson, 13, became the first person known to have beat “Tetris” by getting so far into the game he made it freeze.", url: "https://www.washingtonpost.com/nation/2024/01/04/13-year-old-beats-tetris/", urlToImage: "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://d1i4t8bqe7zgj6.cloudfront.net/01-05-2024/t_01e058b5fa3f40aa8666709c2fa9fbbc_name_nintendo.jpg&w=1440", publishedAt: "2024-01-05T05:44:15Z", content: "Comment on this story\r\nComment\r\nAdd to your saved stories\r\nSave\r\nWillis Gibson spent more than a half-hour on Dec. 21 commanding a seemingly endless waterfall of blocks as they shot down his screen a… [+5348 chars]"))
+    NewsDetailView(viewModel: NewsDetailsViewModel(newsArticle: NewsArticle(source: ArticleSource(id: "the-washington-post", name: "The Washington Post"), author: "Jonathan Edwards", title: "13-year-old becomes first known person to ‘beat’ Tetris - The Washington Post", description: "Willis Gibson, 13, became the first person known to have beat “Tetris” by getting so far into the game he made it freeze.", url: "https://www.washingtonpost.com/nation/2024/01/04/13-year-old-beats-tetris/", urlToImage: "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://d1i4t8bqe7zgj6.cloudfront.net/01-05-2024/t_01e058b5fa3f40aa8666709c2fa9fbbc_name_nintendo.jpg&w=1440", publishedAt: "2024-01-05T05:44:15Z", content: "Comment on this story\r\nComment\r\nAdd to your saved stories\r\nSave\r\nWillis Gibson spent more than a half-hour on Dec. 21 commanding a seemingly endless waterfall of blocks as they shot down his screen a… [+5348 chars]")))
 }

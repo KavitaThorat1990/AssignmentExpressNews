@@ -7,10 +7,15 @@
 
 import Foundation
 
-final class FeaturedNewsCellModel {
+final class FeaturedNewsCellViewModel {
     var newsArticles: [NewsArticle] = []
-    var updateUI: (() -> Void)?
+    var openNewsDetails: ((NewsArticle) -> Void)?
     
+    init(newsArticles: [NewsArticle] = [], openNewsDetails: ((NewsArticle) -> Void)? = nil) {
+        self.newsArticles = newsArticles
+        self.openNewsDetails = openNewsDetails
+    }
+
     func configure(payload: [String: Any]) {
         if let newsArticle = payload[Constants.PayloadKeys.newsList] as? [NewsArticle]{
             self.newsArticles = newsArticle

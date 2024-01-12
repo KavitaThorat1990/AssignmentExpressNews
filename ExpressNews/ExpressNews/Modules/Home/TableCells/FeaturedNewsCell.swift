@@ -11,11 +11,11 @@ import SwiftUI
 class FeaturedNewsCell: UITableViewCell {
     private var timer: Timer?
     var openNewsDetails: ((NewsArticle) -> Void)?
-    var cellModel: FeaturedNewsCellModel = FeaturedNewsCellModel()
+    var cellViewModel: FeaturedNewsCellViewModel = FeaturedNewsCellViewModel()
 
     var payload: [String: Any] = [:] {
         didSet {
-            cellModel.configure(payload: payload)
+            cellViewModel.configure(payload: payload)
         }
     }
 
@@ -65,12 +65,12 @@ class FeaturedNewsCell: UITableViewCell {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.CellIds.featuredNewsItemCell)
-        pageControl.numberOfPages = cellModel.getNumberOfRows()
+        pageControl.numberOfPages = cellViewModel.getNumberOfRows()
     }
 
     func configure(with news: [NewsArticle]) {
-        cellModel.newsArticles = news
-        pageControl.numberOfPages = cellModel.getNumberOfRows()
+        cellViewModel.newsArticles = news
+        pageControl.numberOfPages = cellViewModel.getNumberOfRows()
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
         startAutoScroll()
@@ -82,25 +82,25 @@ class FeaturedNewsCell: UITableViewCell {
 
     func startAutoScroll() {
         timer?.invalidate() // Invalidate existing timer if any
-        guard cellModel.getNumberOfRows() > 1 else { return }
+        guard cellViewModel.getNumberOfRows() > 1 else { return }
         timer = Timer.scheduledTimer(timeInterval: Constants.timeInterval, target: self, selector: #selector(autoScroll), userInfo: nil, repeats: true)
     }
 
     @objc private func autoScroll() {
-        guard cellModel.getNumberOfRows() > 1 else { return }
+        guard cellViewModel.getNumberOfRows() > 1 else { return }
 
         let visibleItems = collectionView.indexPathsForVisibleItems
         if let currentItem = visibleItems.first {
             var nextItem = currentItem.item + 1
 
-            if nextItem == cellModel.getNumberOfRows() {
+            if nextItem == cellViewModel.getNumberOfRows() {
                 nextItem = 0
             }
 
             let nextIndexPath = IndexPath(item: nextItem, section: currentItem.section)
 
             // Make sure to check if the nextIndexPath is within the range
-            guard nextItem < cellModel.getNumberOfRows() else { return }
+            guard nextItem < cellViewModel.getNumberOfRows() else { return }
 
             let rect = self.collectionView.layoutAttributesForItem(at:nextIndexPath)?.frame
             self.collectionView.scrollRectToVisible(rect!, animated: true)
@@ -111,19 +111,21 @@ class FeaturedNewsCell: UITableViewCell {
 
 extension FeaturedNewsCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cellModel.getNumberOfRows()
+        return cellViewModel.getNumberOfRows()
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.CellIds.featuredNewsItemCell, for: indexPath) 
-        if let news = cellModel.getNewsForRow(index: indexPath.item) {
+        if let news = cellViewModel.getNewsForRow(index: indexPath.item) {
+            let featuredNewsItemCell = FeaturedNewsItemCell(cellViewModel: NewsCellViewModel(news: news))
+
             if #available(iOS 16.0, *) {
                 cell.contentConfiguration = UIHostingConfiguration(content: {
-                    FeaturedNewsItemCell(news: news)
+                    featuredNewsItemCell
                 })
             } else {
                 cell.contentConfiguration = HostingContentConfiguration{
-                    FeaturedNewsItemCell(news: news)
+                    featuredNewsItemCell
                 }
             }
         }
@@ -133,7 +135,7 @@ extension FeaturedNewsCell: UICollectionViewDataSource {
 
 extension FeaturedNewsCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let news = cellModel.getNewsForRow(index: indexPath.item) {
+        if let news = cellViewModel.getNewsForRow(index: indexPath.item) {
             openNewsDetails?(news)
         }
     }
