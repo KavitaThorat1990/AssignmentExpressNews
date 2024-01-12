@@ -65,7 +65,7 @@ extension SearchNewsListViewController: UISearchBarDelegate {
             return
         }
         // Use the search term to filter news articles
-        viewModel.resetPagination()
+        viewModel?.resetPagination()
         self.fetchNews(queryParam: [APIConstants.RequestParameters.query: query])
     }
 }

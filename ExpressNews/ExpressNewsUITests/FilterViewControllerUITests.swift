@@ -10,12 +10,11 @@ import XCTest
 
 final class FilterViewControllerUITests: XCTestCase {
     
-    var app: XCUIApplication!
+    var app = XCUIApplication()
 
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        app = XCUIApplication()
         app.launch()
     }
 
@@ -60,7 +59,6 @@ final class FilterViewControllerUITests: XCTestCase {
     }
 
     override func tearDown() {
-        app = nil
         super.tearDown()
     }
 }

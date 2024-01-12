@@ -31,11 +31,11 @@ class NewsListViewController: UIViewController {
     }()
   
    private var sortActionSheet: UIAlertController?
-   private var activityIndicator: UIActivityIndicatorView!
+   private var activityIndicator: UIActivityIndicatorView?
 
     private let filterViewController = FilterViewController()
 
-   var viewModel: NewsListViewModel!
+   var viewModel: NewsListViewModel?
    var payload: [String: Any] = [:]
     
    override func viewDidLoad() {
@@ -48,7 +48,7 @@ class NewsListViewController: UIViewController {
     func setupActivityIndicator() {
         // Set up activity indicator
         activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.hidesWhenStopped = true
+        activityIndicator?.hidesWhenStopped = true
         tableView.tableFooterView = activityIndicator
     }
     
@@ -95,14 +95,14 @@ class NewsListViewController: UIViewController {
 
    private func setupViewModel() {
        viewModel = NewsListViewModel(newsUseCase: MockNewsAPI())
-       viewModel.configure(payload: payload)
+       viewModel?.configure(payload: payload)
    }
 
    func fetchNews(queryParam: [String: Any] = [:]) {
-       activityIndicator.startAnimating() // Start the activity indicator
-       viewModel.fetchNews()
+       activityIndicator?.startAnimating() // Start the activity indicator
+       viewModel?.fetchNews()
            .ensure { [weak self] in
-               self?.activityIndicator.stopAnimating() // Stop the activity indicator, whether the request succeeds or fails
+               self?.activityIndicator?.stopAnimating() // Stop the activity indicator, whether the request succeeds or fails
            }
            .done { [weak self] _ in
                self?.updateUI()
@@ -124,10 +124,10 @@ extension NewsListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIds.newsCell) else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIds.newsCell), let news = viewModel?.newsArticles[indexPath.row] else {
             return UITableViewCell()
         }
-        let news = viewModel.newsArticles[indexPath.row]
+       
         let newsCell = NewsCell(cellViewModel: NewsCellViewModel(news: news))
         if #available(iOS 16.0, *) {
             cell.contentConfiguration = UIHostingConfiguration(content: {
@@ -149,8 +149,9 @@ extension NewsListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let detailsVC = NewsDetailsViewController()
-        let newsArticle = viewModel.newsArticles[indexPath.row]
-        detailsVC.payload = [Constants.PayloadKeys.newsArticle: newsArticle]
+        if let newsArticle = viewModel?.newsArticles[indexPath.row] {
+            detailsVC.payload = [Constants.PayloadKeys.newsArticle: newsArticle]
+        }
         navigationController?.pushViewController(detailsVC, animated: true)
     }
 }
@@ -173,16 +174,17 @@ extension NewsListViewController {
        if sortActionSheet == nil {
            createSortActionSheet()
        }
-
-       present(sortActionSheet!, animated: true, completion: nil)
+       if let actionSheet = sortActionSheet {
+           present(actionSheet, animated: true, completion: nil)
+       }
    }
 
     @objc func filterButtonTapped() {
         // Set the callback closure to receive selected options
         filterViewController.filterOptionsUpdated = { [weak self] selectedOptions in
-            self?.viewModel.selectedFilterOptions = selectedOptions
-            self?.viewModel.selectedCategory = ""
-            self?.viewModel.resetPagination()
+            self?.viewModel?.selectedFilterOptions = selectedOptions
+            self?.viewModel?.selectedCategory = ""
+            self?.viewModel?.resetPagination()
             self?.fetchNews()
         }
 
@@ -196,9 +198,9 @@ extension NewsListViewController {
 
         for option in sortingOptions {
             let action = UIAlertAction(title: option.title(), style: .default) { [weak self] _ in
-                self?.viewModel.handleSortSelection(option: option)
+                self?.viewModel?.handleSortSelection(option: option)
                 // Reset page info and fetch news
-                self?.viewModel.resetPagination()
+                self?.viewModel?.resetPagination()
                 self?.fetchNews()
             }
             sortActionSheet?.addAction(action)

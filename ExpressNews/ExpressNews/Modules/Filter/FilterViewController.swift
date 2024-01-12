@@ -35,7 +35,7 @@ class FilterViewController: UIViewController {
     }()
 
     var filterOptionsUpdated: (([String: [String]]) -> Void)?
-    var viewModel: FilterViewModel!
+    var viewModel = FilterViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,6 @@ class FilterViewController: UIViewController {
     }
 
     func setupViewModel() {
-        viewModel = FilterViewModel()
         viewModel.filterOptionsUpdated = { [weak self] in
             self?.optionsTableView.reloadData()
         }

@@ -15,16 +15,6 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    static var identifier: String {
-        return String(describing: self)
-    }
-
-    static func instantiate(storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)) -> Self {
-        return storyboard.instantiateViewController(withIdentifier: identifier) as! Self
-    }
-}
-
-extension UIViewController {
     func handleAPIError(_ error: Error) {
         if let apiError = error as? APIError {
             switch apiError {

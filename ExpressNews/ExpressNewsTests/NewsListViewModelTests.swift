@@ -8,20 +8,7 @@
 import XCTest
 
 final class NewsListViewModelTests: XCTestCase {
-    var viewModel: NewsListViewModel!
-    var mockNewsUseCase: MockNewsAPI!
-
-    override func setUp() {
-        super.setUp()
-        mockNewsUseCase = MockNewsAPI()
-        viewModel = NewsListViewModel(newsUseCase: mockNewsUseCase)
-    }
-
-    override func tearDown() {
-        viewModel = nil
-        mockNewsUseCase = nil
-        super.tearDown()
-    }
+    var viewModel: NewsListViewModel = NewsListViewModel(newsUseCase: MockNewsAPI())
 
     func testConfigure() {
         let payload: [String: Any] = [Constants.PayloadKeys.category: "Technology"]

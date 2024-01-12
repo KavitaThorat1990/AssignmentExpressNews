@@ -26,21 +26,18 @@ class NewsDetailsViewController: UIViewController {
         guard let news = viewModel.newsArticle else {
             return
         }
-        // 1
         let vc = UIHostingController(rootView: NewsDetailView(viewModel: NewsDetailsViewModel(newsArticle: news, openNewsURLClosure: { [weak self] in
             self?.openNewsURL()
         })))
 
-        let newsDetailsView = vc.view!
+        guard let newsDetailsView = vc.view else {
+            return
+        }
         newsDetailsView.translatesAutoresizingMaskIntoConstraints = false
         
-        // 2
-        // Add the view controller to the destination view controller.
         addChild(vc)
         view.addSubview(newsDetailsView)
         
-        // 3
-        // Create and activate the constraints for the swiftui's view.
         NSLayoutConstraint.activate([
             newsDetailsView.topAnchor.constraint(equalTo: view.topAnchor),
             newsDetailsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -48,8 +45,6 @@ class NewsDetailsViewController: UIViewController {
             newsDetailsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        // 4
-        // Notify the child view controller that the move is complete.
         vc.didMove(toParent: self)
     }
 

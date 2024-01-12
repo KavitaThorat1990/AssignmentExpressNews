@@ -102,6 +102,9 @@ final class FilterViewModel {
                 self?.filterOptionsUpdated?()
                 self?.filterOptionsLoaded?()
             }
+            .catch { error in
+                print(error)
+            }
     }
 
    func numberOfCategories() -> Int {

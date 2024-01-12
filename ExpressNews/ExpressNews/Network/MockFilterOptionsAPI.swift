@@ -10,7 +10,7 @@ import Foundation
 import PromiseKit
 
 class MockFilterOptionsAPI: FilterOptionsUseCase {
-    var shouldFail: Bool!
+    var shouldFail: Bool = false
     
     init(shouldFail: Bool = false) {
         self.shouldFail = shouldFail

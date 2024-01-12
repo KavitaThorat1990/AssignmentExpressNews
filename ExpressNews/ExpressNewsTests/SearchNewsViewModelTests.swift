@@ -8,17 +8,7 @@
 import XCTest
 
 final class SearchNewsViewModelTests: XCTestCase {
-    var viewModel: SearchNewsViewModel!
-
-    override func setUp() {
-        super.setUp()
-        viewModel = SearchNewsViewModel()
-    }
-
-    override func tearDown() {
-        viewModel = nil
-        super.tearDown()
-    }
+    var viewModel = SearchNewsViewModel()
 
     func testGetAPIParameters() {
         viewModel.selectedQuery = "Apple"

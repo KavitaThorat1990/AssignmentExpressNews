@@ -9,7 +9,7 @@ import Foundation
 import PromiseKit
 
 class MockNewsAPI: NewsUseCase {
-    var shouldFail: Bool!
+    var shouldFail: Bool = false
     
     init(shouldFail: Bool = false) {
         self.shouldFail = shouldFail

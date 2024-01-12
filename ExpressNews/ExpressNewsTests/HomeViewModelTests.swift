@@ -9,20 +9,7 @@ import XCTest
 
 final class HomeViewModelTests: XCTestCase {
 
-    var viewModel: HomeViewModel!
-    var mockNewsUseCase: MockNewsAPI!
-
-    override func setUp() {
-        super.setUp()
-        mockNewsUseCase = MockNewsAPI()
-        viewModel = HomeViewModel(newsUseCase: mockNewsUseCase)
-    }
-
-    override func tearDown() {
-        viewModel = nil
-        mockNewsUseCase = nil
-        super.tearDown()
-    }
+    var viewModel = HomeViewModel(newsUseCase: MockNewsAPI())
 
     func testFetchFeaturedNews() {
         // Set up expectations

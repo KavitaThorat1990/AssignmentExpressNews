@@ -102,9 +102,10 @@ class FeaturedNewsCell: UITableViewCell {
             // Make sure to check if the nextIndexPath is within the range
             guard nextItem < cellViewModel.getNumberOfRows() else { return }
 
-            let rect = self.collectionView.layoutAttributesForItem(at:nextIndexPath)?.frame
-            self.collectionView.scrollRectToVisible(rect!, animated: true)
-            pageControl.currentPage = nextItem
+            if let rect = self.collectionView.layoutAttributesForItem(at:nextIndexPath)?.frame {
+                self.collectionView.scrollRectToVisible(rect, animated: true)
+                pageControl.currentPage = nextItem
+            }            
         }
     }
 }
