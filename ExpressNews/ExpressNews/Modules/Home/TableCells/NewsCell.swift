@@ -17,13 +17,13 @@ struct NewsCell: View {
             // Image View
             if let imageUrl = cellViewModel.news.imageUrl {
                 WebImage(url: imageUrl)
-                    .placeholder(Image(systemName: "photo"))
+                    .placeholder(Image(systemName: Constants.ImageNames.placeholder))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 80, height: 80)
                     .cornerRadius(8)
             } else {
-                Image(systemName: "photo")
+                Image(systemName: Constants.ImageNames.placeholder)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 80, height: 80)

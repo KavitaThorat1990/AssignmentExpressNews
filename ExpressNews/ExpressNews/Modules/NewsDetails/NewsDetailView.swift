@@ -28,7 +28,7 @@ struct NewsDetailView: View {
                 
                 if let imageUrl = viewModel.newsArticle?.imageUrl {
                     WebImage(url: imageUrl)
-                        .placeholder(Image(systemName: "photo"))
+                        .placeholder(Image(systemName: Constants.ImageNames.placeholder))
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(maxWidth: .infinity, maxHeight: 200)

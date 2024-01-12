@@ -18,12 +18,12 @@ struct FeaturedNewsItemCell: View {
 
             if let imageUrl = cellViewModel.news.imageUrl {
                 WebImage(url:imageUrl)
-                    .placeholder( Image(systemName: "photo.fill"))
+                    .placeholder( Image(systemName: Constants.ImageNames.placeholder))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(maxWidth: .infinity, maxHeight: 200)
             } else {
-                Image(systemName: "photo.fill")
+                Image(systemName: Constants.ImageNames.placeholder)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(maxWidth: .infinity, maxHeight: 200)

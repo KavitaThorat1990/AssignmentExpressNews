@@ -12,7 +12,6 @@ final class HomeViewModelTests: XCTestCase {
     var viewModel = HomeViewModel(newsUseCase: MockNewsAPI())
 
     func testFetchFeaturedNews() {
-        // Set up expectations
         let expectation = self.expectation(description: "Fetch Trending News")
 
         viewModel.fetchFeaturedNews(parameters: nil)

@@ -94,7 +94,7 @@ class NewsListViewController: UIViewController {
    }
 
    private func setupViewModel() {
-       viewModel = NewsListViewModel(newsUseCase: MockNewsAPI())
+       viewModel = NewsListViewModel()
        viewModel?.configure(payload: payload)
    }
 

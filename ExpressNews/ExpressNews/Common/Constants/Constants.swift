@@ -59,6 +59,7 @@ struct Constants {
     struct ImageNames {
         static let filter = "line.3.horizontal.decrease"
         static let sort = "arrow.down.and.line.horizontal.and.arrow.up"
+        static let placeholder = "photo.fill"
     }
     
     struct PayloadKeys {

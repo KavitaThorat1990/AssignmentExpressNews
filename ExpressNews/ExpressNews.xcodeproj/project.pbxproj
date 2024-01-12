@@ -11,7 +11,6 @@
 		FF3411102B46F6AA0094061E /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF34110F2B46F6AA0094061E /* APIError.swift */; };
 		FF3411132B46F8340094061E /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3411122B46F8340094061E /* APIConstants.swift */; };
 		FF3411152B46F8690094061E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3411142B46F8690094061E /* Constants.swift */; };
-		FF3411172B47E0A10094061E /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3411162B47E0A10094061E /* UITableViewCell+Extension.swift */; };
 		FF34111E2B47E2410094061E /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF98883B2B4141E6001A8F43 /* NewsCell.swift */; };
 		FF3411202B47E24C0094061E /* NewsCategoryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9888402B414E4E001A8F43 /* NewsCategoryHeader.swift */; };
 		FF3411222B47E45D0094061E /* NewsArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9888212B4025CA001A8F43 /* NewsArticle.swift */; };
@@ -128,7 +127,6 @@
 		FF34110F2B46F6AA0094061E /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		FF3411122B46F8340094061E /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		FF3411142B46F8690094061E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		FF3411162B47E0A10094061E /* UITableViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extension.swift"; sourceTree = "<group>"; };
 		FF34112A2B47EB480094061E /* StringExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensionTests.swift; sourceTree = "<group>"; };
 		FF34112C2B47F2F30094061E /* MockNewsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNewsAPI.swift; sourceTree = "<group>"; };
 		FF34112E2B47F3830094061E /* MockAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIError.swift; sourceTree = "<group>"; };
@@ -346,7 +344,6 @@
 		FF98882E2B402FF7001A8F43 /* UIKitExtensions */ = {
 			isa = PBXGroup;
 			children = (
-				FF3411162B47E0A10094061E /* UITableViewCell+Extension.swift */,
 				FF9888732B469B71001A8F43 /* UIViewController+Extension.swift */,
 				FF98887A2B46E700001A8F43 /* String+Extension.swift */,
 				FF2D88E42B4D726D00501151 /* HostingContentConfiguration.swift */,
@@ -633,7 +630,6 @@
 				FF9888522B452E4F001A8F43 /* FilterViewController.swift in Sources */,
 				FF9888452B417484001A8F43 /* NewsResponse.swift in Sources */,
 				FF88E2322B5123AC00B339F7 /* NewsCellViewModel.swift in Sources */,
-				FF3411172B47E0A10094061E /* UITableViewCell+Extension.swift in Sources */,
 				FF98885C2B4536FF001A8F43 /* FilterOptionsAPI.swift in Sources */,
 				FF9888172B401527001A8F43 /* HomeViewController.swift in Sources */,
 				FF9888542B453638001A8F43 /* Source.swift in Sources */,
