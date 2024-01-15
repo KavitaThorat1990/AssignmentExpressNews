@@ -13,5 +13,4 @@ protocol FilterOptionsUseCase {
     func loadLanguages() -> Promise<[Language]>
     func loadCategories() -> Promise<[String]>
     func loadFilterCategories() -> Promise<[String]>
-
 }
