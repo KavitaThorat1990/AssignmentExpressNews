@@ -149,7 +149,7 @@ extension FilterViewController {
         // Notify the callback closure with selected options
         filterOptionsUpdated?(selectedOptions)
 
-        dismiss(animated: true, completion: nil)
+        NewsAppCoordinator.shared.dismissViewController()
     }
     
     @objc func clearAllButtonTapped() {

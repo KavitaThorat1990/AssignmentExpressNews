@@ -92,15 +92,11 @@ class HomeViewController: UIViewController {
     }
     
     private func seeAllButtonTapped(for category: String) {
-        let newsListVC = NewsListViewController()
-        newsListVC.payload = [Constants.PayloadKeys.category: category]
-
-        navigationController?.pushViewController(newsListVC, animated: true)
+        NewsAppCoordinator.shared.navigateToNewsList(for: category, presentationStyle: .push)
     }
     
     @objc func searchButtonTapped() {
-        let searchNewsVC = SearchNewsListViewController()
-        navigationController?.pushViewController(searchNewsVC, animated: true)
+        NewsAppCoordinator.shared.navigateToSearch(.push)
     }
 }
 
@@ -179,9 +175,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     fileprivate func navigateToNewsDetails(_ news: NewsArticle) {
-        let detailsVC = NewsDetailsViewController()
-        detailsVC.payload = [Constants.PayloadKeys.newsArticle: news]
-        navigationController?.pushViewController(detailsVC, animated: true)
+        NewsAppCoordinator.shared.navigateToNewsDetails(news, presentationStyle: .push)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

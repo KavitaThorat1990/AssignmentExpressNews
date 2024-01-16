@@ -10,16 +10,23 @@ import UIKit
 class NewsAppCoordinator: Coordinator {
     var navigationController: UINavigationController
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+    static let shared = NewsAppCoordinator()
+
+    private init() {
+        // Private initializer to ensure singleton
+        self.navigationController = UINavigationController()
     }
 
     func start() {
+        navigateToHome()
+    }
+    
+    func navigateToHome() {
         let homeViewController = HomeViewController()
-        navigationController.pushViewController(homeViewController, animated: true)
+        navigateTo(presentationStyle: .push, toViewController: homeViewController)
     }
 
-    fileprivate func navigateTo(presentationStyle: PresentationStyle, toViewController: UIViewController) {
+    func navigateTo(presentationStyle: PresentationStyle, toViewController: UIViewController) {
         switch presentationStyle {
         case .push:
             navigationController.pushViewController(toViewController, animated: true)

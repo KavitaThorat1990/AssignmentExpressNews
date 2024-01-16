@@ -20,7 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = UINavigationController.init(rootViewController:  HomeViewController())
+        window?.rootViewController = NewsAppCoordinator.shared.navigationController
+        NewsAppCoordinator.shared.start()
         window?.makeKeyAndVisible()
     }
 

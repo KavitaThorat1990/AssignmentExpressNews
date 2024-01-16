@@ -148,11 +148,9 @@ extension NewsListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let detailsVC = NewsDetailsViewController()
         if let newsArticle = viewModel?.newsArticles[indexPath.row] {
-            detailsVC.payload = [Constants.PayloadKeys.newsArticle: newsArticle]
+            NewsAppCoordinator.shared.navigateToNewsDetails(newsArticle, presentationStyle: .push)
         }
-        navigationController?.pushViewController(detailsVC, animated: true)
     }
 }
 
@@ -175,7 +173,7 @@ extension NewsListViewController {
            createSortActionSheet()
        }
        if let actionSheet = sortActionSheet {
-           present(actionSheet, animated: true, completion: nil)
+           NewsAppCoordinator.shared.navigateTo(presentationStyle: .present, toViewController: actionSheet)
        }
    }
 
@@ -187,8 +185,7 @@ extension NewsListViewController {
             self?.viewModel?.resetPagination()
             self?.fetchNews()
         }
-
-        present(filterViewController, animated: true, completion: nil)
+        NewsAppCoordinator.shared.navigateTo(presentationStyle: .present, toViewController: filterViewController)
     }
     
     private func createSortActionSheet() {
