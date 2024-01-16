@@ -62,6 +62,8 @@
 		FF3F0B282B5689980044D115 /* MockNewsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF34112C2B47F2F30094061E /* MockNewsAPI.swift */; };
 		FF3F0B292B56899A0044D115 /* MockAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF34112E2B47F3830094061E /* MockAPIError.swift */; };
 		FF3F0B2A2B56899E0044D115 /* MockFilterOptionsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF34114A2B480ED40094061E /* MockFilterOptionsAPI.swift */; };
+		FF3F0B2B2B56A5690044D115 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3F0B262B5684DA0044D115 /* AppConfiguration.swift */; };
+		FF3F0B2C2B56A56D0044D115 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3F0B262B5684DA0044D115 /* AppConfiguration.swift */; };
 		FF88E22B2B500B7300B339F7 /* FeaturedNewsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF88E22A2B500B7300B339F7 /* FeaturedNewsCellViewModel.swift */; };
 		FF88E22D2B50109700B339F7 /* FeaturedNewsCellModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF88E22C2B50109700B339F7 /* FeaturedNewsCellModelTests.swift */; };
 		FF88E22E2B5010A400B339F7 /* FeaturedNewsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF88E22A2B500B7300B339F7 /* FeaturedNewsCellViewModel.swift */; };
@@ -720,6 +722,7 @@
 				FF88E2382B512D2400B339F7 /* NewsCellViewModel.swift in Sources */,
 				FF34113B2B47F88E0094061E /* NewsUseCase.swift in Sources */,
 				FF3411222B47E45D0094061E /* NewsArticle.swift in Sources */,
+				FF3F0B2B2B56A5690044D115 /* AppConfiguration.swift in Sources */,
 				FF88E2372B512CE200B339F7 /* NewsCellViewModelTests.swift in Sources */,
 				FF34112B2B47EB480094061E /* StringExtensionTests.swift in Sources */,
 				FF3411292B47E4A50094061E /* String+Extension.swift in Sources */,
@@ -748,6 +751,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF3F0B2C2B56A56D0044D115 /* AppConfiguration.swift in Sources */,
 				FFA59AFB2B4BF6540083D6E5 /* FilterViewControllerUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
