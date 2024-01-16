@@ -31,7 +31,7 @@ class FilterOptionsAPI: FilterOptionsUseCase {
         return DataProvider.loadJSONFile(from:  APIConstants.LocalJson.categories)
     }
     func loadFilterCategories() -> Promise<[String]> {
-        return DataProvider.loadJSONFile(from:  APIConstants.LocalJson.filterCatgories)
+        return DataProvider.loadJSONFile(from:  APIConstants.LocalJson.filterCategories)
     }
 
 }

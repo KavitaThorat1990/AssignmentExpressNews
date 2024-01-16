@@ -8,8 +8,6 @@
 import Foundation
 
 struct APIConstants {
-    static let baseURL = "https://newsapi.org/v2"
-    static let apiKey = "b79284ef1a714a48a5c65afb650ca952" //"fa4917c19e7c42b8b4a689025199530c"
     
     struct Header {
         static let apiKeyHeader = "X-Api-Key"
@@ -25,7 +23,7 @@ struct APIConstants {
         static let countries = "countries"
         static let languages = "languages"
         static let categories = "categories"
-        static let filterCatgories = "filterCategories"
+        static let filterCategories = "filterCategories"
     }
     
     struct RequestParameters {

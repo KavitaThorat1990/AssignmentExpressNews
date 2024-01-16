@@ -21,7 +21,7 @@ class APIClient {
 
     func fetchDataWithParameters<T: Codable>(from endpoint: String, parameters: [String: Any]) -> Promise<T> {
         return Promise { seal in
-            var urlString = APIConstants.baseURL + endpoint
+            var urlString = AppConfiguration.baseURL + endpoint
             if !parameters.isEmpty {
                 urlString += "?" + parameters.map { "\($0.key)=\($0.value)" }.joined(separator: "&")
             }
@@ -32,7 +32,7 @@ class APIClient {
             }
 
             var request = URLRequest(url: url)
-            request.addValue(APIConstants.apiKey, forHTTPHeaderField: APIConstants.Header.apiKeyHeader)
+            request.addValue(AppConfiguration.apiKey, forHTTPHeaderField: APIConstants.Header.apiKeyHeader)
 
             URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if let error = error {
