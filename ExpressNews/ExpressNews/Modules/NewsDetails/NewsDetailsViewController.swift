@@ -23,12 +23,8 @@ class NewsDetailsViewController: UIViewController {
     }
     
     private func setupSwiftUIView() {
-        guard let news = viewModel.newsArticle else {
-            return
-        }
-        let vc = UIHostingController(rootView: NewsDetailView(viewModel: NewsDetailsViewModel(newsArticle: news, openNewsURLClosure: { [weak self] in
-            self?.openNewsURL()
-        })))
+
+        let vc = UIHostingController(rootView: NewsDetailView(viewModel: viewModel))
 
         guard let newsDetailsView = vc.view else {
             return
@@ -46,13 +42,5 @@ class NewsDetailsViewController: UIViewController {
         ])
         
         vc.didMove(toParent: self)
-    }
-
-
-    @objc private func openNewsURL() {
-        // open link within app or navigate to safari
-        if let urlStr = viewModel.newsArticle?.url, let url = URL(string: urlStr), UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
     }
 }

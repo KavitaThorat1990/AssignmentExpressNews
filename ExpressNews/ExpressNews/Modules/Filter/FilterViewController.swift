@@ -112,7 +112,7 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
         if tableView == categoriesTableView {
             return viewModel.numberOfCategories()
         } else {
-            return viewModel.numberOfOptions(for: viewModel.selectedCategoryIndex)
+            return viewModel.numberOfOptions(for: viewModel.getSelectedCategoryIndex())
         }
     }
 
@@ -133,7 +133,7 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == categoriesTableView {
-            viewModel.selectedCategoryIndex = indexPath.row
+            viewModel.setSelectedCategoryIndex(indexPath.row)
             optionsTableView.reloadData()
         } else {
             viewModel.didSelectOption(at: indexPath)
@@ -149,7 +149,7 @@ extension FilterViewController {
         // Notify the callback closure with selected options
         filterOptionsUpdated?(selectedOptions)
 
-        NewsAppCoordinator.shared.dismissViewController()
+        NewsAppNavigator.shared.dismissViewController()
     }
     
     @objc func clearAllButtonTapped() {

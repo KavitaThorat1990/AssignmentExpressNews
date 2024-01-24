@@ -25,8 +25,9 @@ class NewsListViewController: UIViewController {
         return button
     }()
     
-    var tableView: UITableView = {
+    private var tableView: UITableView = {
         let tableView = UITableView()
+        tableView.accessibilityIdentifier = Constants.AccessibilityIds.newsListTable
         return tableView
     }()
   
@@ -45,14 +46,14 @@ class NewsListViewController: UIViewController {
        fetchNews()
    }
 
-    func setupActivityIndicator() {
+   private func setupActivityIndicator() {
         // Set up activity indicator
         activityIndicator = UIActivityIndicatorView(style: .medium)
         activityIndicator?.hidesWhenStopped = true
         tableView.tableFooterView = activityIndicator
     }
     
-    func setupUI() {
+    private func setupUI() {
        navigationItem.title  = Constants.ScreenTitles.newsList
        view.backgroundColor = .white
 
@@ -88,23 +89,23 @@ class NewsListViewController: UIViewController {
        tableView.delegate = self
        tableView.dataSource = self
        
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.CellIds.newsCell)
+       tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.CellIds.newsCell)
 
        setupActivityIndicator()
-   }
+    }
 
    private func setupViewModel() {
        viewModel = NewsListViewModel()
        viewModel?.configure(payload: payload)
    }
 
-   func fetchNews(queryParam: [String: Any] = [:]) {
+   private func fetchNews(queryParam: [String: Any] = [:]) {
        activityIndicator?.startAnimating() // Start the activity indicator
        viewModel?.fetchNews()
            .ensure { [weak self] in
                self?.activityIndicator?.stopAnimating() // Stop the activity indicator, whether the request succeeds or fails
            }
-           .done { [weak self] _ in
+           .done { [weak self] in
                self?.updateUI()
            }
            .catch { [weak self] error in
@@ -112,7 +113,7 @@ class NewsListViewController: UIViewController {
            }
     }
     
-    func updateUI() {
+    private func updateUI() {
         tableView.reloadData()
     }
 
@@ -120,11 +121,11 @@ class NewsListViewController: UIViewController {
 
 extension NewsListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.newsArticles.count ?? 0
+        return viewModel?.numberOfRows() ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIds.newsCell), let news = viewModel?.newsArticles[indexPath.row] else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIds.newsCell), let news = viewModel?.getNews(for: indexPath.row) else {
             return UITableViewCell()
         }
        
@@ -148,9 +149,7 @@ extension NewsListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let newsArticle = viewModel?.newsArticles[indexPath.row] {
-            NewsAppCoordinator.shared.navigateToNewsDetails(newsArticle, presentationStyle: .push)
-        }
+        viewModel?.didSelectRowAt(index: indexPath.row)
     }
 }
 
@@ -173,19 +172,17 @@ extension NewsListViewController {
            createSortActionSheet()
        }
        if let actionSheet = sortActionSheet {
-           NewsAppCoordinator.shared.navigateTo(presentationStyle: .present, toViewController: actionSheet)
+           NewsAppNavigator.shared.navigateTo(presentationStyle: .present, toViewController: actionSheet)
        }
    }
 
-    @objc func filterButtonTapped() {
+    @objc private func filterButtonTapped() {
         // Set the callback closure to receive selected options
         filterViewController.filterOptionsUpdated = { [weak self] selectedOptions in
-            self?.viewModel?.selectedFilterOptions = selectedOptions
-            self?.viewModel?.selectedCategory = ""
-            self?.viewModel?.resetPagination()
+            self?.viewModel?.setSelectedFilterOptions(selectedOptions: selectedOptions)
             self?.fetchNews()
         }
-        NewsAppCoordinator.shared.navigateTo(presentationStyle: .present, toViewController: filterViewController)
+        NewsAppNavigator.shared.navigateTo(presentationStyle: .present, toViewController: filterViewController)
     }
     
     private func createSortActionSheet() {

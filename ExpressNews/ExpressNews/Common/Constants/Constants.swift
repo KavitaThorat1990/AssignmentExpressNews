@@ -52,8 +52,11 @@ struct Constants {
     struct AccessibilityIds {
         static let optionTable = "optionsTableView"
         static let categoryTable = "categoriesTableView"
+        static let newsListTable = "newsListTable"
         static let seeAllButton = "SeeAll"
         static let filterButton = "Filter"
+        static let seeMoreButton = "SeeMore"
+
     }
     
     struct ImageNames {

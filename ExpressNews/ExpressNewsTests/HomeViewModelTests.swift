@@ -9,14 +9,14 @@ import XCTest
 
 final class HomeViewModelTests: XCTestCase {
 
-    var viewModel = HomeViewModel(newsUseCase: MockNewsAPI())
+    var viewModel = HomeViewModel(homeNewsUseCase: MockHomeNewsUseCase())
 
     func testFetchFeaturedNews() {
         let expectation = self.expectation(description: "Fetch Trending News")
 
         viewModel.fetchFeaturedNews(parameters: nil)
-            .done { trendingNews in
-                XCTAssertEqual(trendingNews.count, 5)
+            .done { [weak self] in
+                XCTAssertEqual(self?.viewModel.getFeaturedNews().count ?? 0, 5)
                 expectation.fulfill()
             }
             .catch { error in
@@ -28,7 +28,6 @@ final class HomeViewModelTests: XCTestCase {
     }
 
     func testFetchTrendingNewsForCategories() {
-        viewModel.categories = ["Category1", "Category2"]
 
         let expectation = self.expectation(description: "Fetch Trending News for Categories")
 

@@ -57,8 +57,11 @@ final class FilterViewControllerUITests: XCTestCase {
         XCTAssertEqual( optionsCellsForCategories.element(boundBy: 2).isSelected, true)
 
     }
+    
+//
 
     override func tearDown() {
         super.tearDown()
     }
+    
 }

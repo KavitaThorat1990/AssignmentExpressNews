@@ -8,7 +8,7 @@
 import Foundation
 import PromiseKit
 
-class FilterOptionsAPI: FilterOptionsUseCase {
+class FilterOptionsUseCase: FilterOptionsUseCaseProtocol {
 
     private let apiClient: APIClient
 

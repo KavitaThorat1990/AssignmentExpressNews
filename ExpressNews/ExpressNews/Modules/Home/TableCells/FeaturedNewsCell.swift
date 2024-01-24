@@ -10,7 +10,6 @@ import SwiftUI
 
 class FeaturedNewsCell: UITableViewCell {
     private var timer: Timer?
-    var openNewsDetails: ((NewsArticle) -> Void)?
     var cellViewModel: FeaturedNewsCellViewModel = FeaturedNewsCellViewModel()
 
     var payload: [String: Any] = [:] {
@@ -68,8 +67,8 @@ class FeaturedNewsCell: UITableViewCell {
         pageControl.numberOfPages = cellViewModel.getNumberOfRows()
     }
 
-    func configure(with news: [NewsArticle]) {
-        cellViewModel.newsArticles = news
+    func configure(with payload: [String: Any]) {
+        self.payload = payload
         pageControl.numberOfPages = cellViewModel.getNumberOfRows()
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
@@ -136,9 +135,7 @@ extension FeaturedNewsCell: UICollectionViewDataSource {
 
 extension FeaturedNewsCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let news = cellViewModel.getNewsForRow(index: indexPath.item) {
-            openNewsDetails?(news)
-        }
+        cellViewModel.didSelectItemAt(indexPath: indexPath)
     }
 }
 

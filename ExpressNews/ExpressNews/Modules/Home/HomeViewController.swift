@@ -17,12 +17,11 @@ class HomeViewController: UIViewController {
         return tableView
     }()
 
-    var viewModel: HomeViewModel!
+    var viewModel: HomeViewModel = HomeViewModel()
     private var featuredNewsCell: FeaturedNewsCell?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = HomeViewModel()
         setupUI()
         loadData()
     }
@@ -39,8 +38,6 @@ class HomeViewController: UIViewController {
     
     private func setupUI() {
         navigationItem.title = Constants.ScreenTitles.home
-        //add search button
-        addRightBarButtonItemToNavigationBar(systemItem: .search, actionSelector: #selector(searchButtonTapped))
         
         // Set up the table view
         view.addSubview(tableView)
@@ -62,10 +59,6 @@ class HomeViewController: UIViewController {
 
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Constants.CellIds.newsCategoryHeader)
         featuredNewsCell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIds.featuredNewsCell) as? FeaturedNewsCell
-        featuredNewsCell?.payload = [Constants.PayloadKeys.newsList: viewModel.featuredNews]
-        featuredNewsCell?.openNewsDetails = {[weak self] news in
-            self?.navigateToNewsDetails(news)
-        }
     }
 
     private func loadData() {
@@ -87,16 +80,8 @@ class HomeViewController: UIViewController {
             }
     }
     
-    func updateUI() {
+    private func updateUI() {
         tableView.reloadData()
-    }
-    
-    private func seeAllButtonTapped(for category: String) {
-        NewsAppCoordinator.shared.navigateToNewsList(for: category, presentationStyle: .push)
-    }
-    
-    @objc func searchButtonTapped() {
-        NewsAppCoordinator.shared.navigateToSearch(.push)
     }
 }
 
@@ -104,7 +89,7 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.categories.count + 1
+        return viewModel.numberOfSections()
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -117,7 +102,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            featuredNewsCell?.configure(with: viewModel.featuredNews)
+            let payload = [Constants.PayloadKeys.newsList: viewModel.getFeaturedNews()]
+            featuredNewsCell?.configure(with: payload)
             return featuredNewsCell ?? UITableViewCell()
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIds.newsCell) else {
@@ -151,9 +137,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.CellIds.newsCategoryHeader) else {
                return nil
            }
-           let category = viewModel.categories[section - 1]
+           let category = viewModel.getHeaderTitle(for: section)
            let newsHeader = NewsCategoryHeader(title: category) { [weak self] in
-               self?.seeAllButtonTapped(for: category)
+               self?.viewModel.navigateToNewsList(for: category)
            }
            
            if #available(iOS 16.0, *) {
@@ -171,18 +157,11 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section != 0 ?  Constants.CellHeights.categoryHeader : 0.0
-    }
-
-    fileprivate func navigateToNewsDetails(_ news: NewsArticle) {
-        NewsAppCoordinator.shared.navigateToNewsDetails(news, presentationStyle: .push)
+        return viewModel.heightForHeaderInSection(section)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section != 0 {
-            tableView.deselectRow(at: indexPath, animated: true)
-            let news = viewModel.getNewsForSection(section: indexPath.section)[indexPath.row]
-            navigateToNewsDetails(news)
-        }
+        tableView.deselectRow(at: indexPath, animated: true)
+        viewModel.didSelectRowAt(indexPath: indexPath)
     }
 }

@@ -15,7 +15,7 @@ struct NewsCell: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             // Image View
-            if let imageUrl = cellViewModel.news.imageUrl {
+            if let imageUrl = cellViewModel.newsImageUrl() {
                 WebImage(url: imageUrl)
                     .placeholder(Image(systemName: Constants.ImageNames.placeholder))
                     .resizable()
@@ -32,11 +32,11 @@ struct NewsCell: View {
             }
 
             VStack(alignment: .leading, spacing: 5) {
-                Text(cellViewModel.news.title)
+                Text(cellViewModel.newsTitle())
                     .font(.headline)
                     .foregroundColor(.black)
                     .lineLimit(3)
-                Text(cellViewModel.news.authorAndSource)
+                Text(cellViewModel.newsAuthorAndSource())
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .lineLimit(1)

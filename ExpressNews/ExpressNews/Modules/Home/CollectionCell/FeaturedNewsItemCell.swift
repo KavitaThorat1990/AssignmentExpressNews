@@ -16,7 +16,7 @@ struct FeaturedNewsItemCell: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
 
-            if let imageUrl = cellViewModel.news.imageUrl {
+            if let imageUrl = cellViewModel.newsImageUrl() {
                 WebImage(url:imageUrl)
                     .placeholder( Image(systemName: Constants.ImageNames.placeholder))
                     .resizable()
@@ -30,7 +30,7 @@ struct FeaturedNewsItemCell: View {
                     .foregroundColor(.gray)
             }
             
-            NewsTitleView(title: cellViewModel.news.title)
+            NewsTitleView(title: cellViewModel.newsTitle())
                 .background(
                     GeometryReader { geometry in
                         Color.clear.onAppear {

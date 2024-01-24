@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol Coordinator: AnyObject {
+protocol Navigator: AnyObject {
     var navigationController: UINavigationController { get set }
     func start()
     func navigateToNewsDetails(_ news: NewsArticle, presentationStyle: PresentationStyle)
-    func navigateToSearch(_  presentationStyle: PresentationStyle)
     func navigateToNewsList(for category: String, presentationStyle: PresentationStyle)
+    func openUrl(_ url: URL)
     func dismissViewController()
 }
 

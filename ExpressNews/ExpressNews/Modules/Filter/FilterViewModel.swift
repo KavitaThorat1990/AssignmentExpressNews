@@ -20,14 +20,14 @@ struct FilterCategory {
 }
 
 final class FilterViewModel {
-    var categories: [FilterCategory] = []
-    var selectedCategoryIndex = 0
+    private var categories: [FilterCategory] = []
+    private var selectedCategoryIndex = 0
     var filterOptionsUpdated: (() -> Void)?
     var filterOptionsLoaded: (() -> Void)?
 
-    let filterOptionsUseCase: FilterOptionsUseCase
+    private let filterOptionsUseCase: FilterOptionsUseCaseProtocol
 
-    init(filterOptionsUseCase: FilterOptionsUseCase = FilterOptionsAPI()) {
+    init(filterOptionsUseCase: FilterOptionsUseCaseProtocol = FilterOptionsUseCase()) {
         self.filterOptionsUseCase = filterOptionsUseCase
         setupCategories()
     }
@@ -107,55 +107,55 @@ final class FilterViewModel {
             }
     }
 
-   func numberOfCategories() -> Int {
-       return categories.count
-   }
+    func numberOfCategories() -> Int {
+        return categories.count
+    }
 
-   func categoryTitle(for index: Int) -> String {
-       if index < categories.count {
+    func categoryTitle(for index: Int) -> String {
+        if index < categories.count {
            return categories[index].title
-       }
-       return ""
-   }
+        }
+        return ""
+    }
 
-   func numberOfOptions(for index: Int) -> Int {
-       if index < categories.count {
+    func numberOfOptions(for index: Int) -> Int {
+        if index < categories.count {
            return categories[index].options.count
-       }
-       return 0
-   }
+        }
+        return 0
+    }
 
-   func option(for indexPath: IndexPath) -> FilterOption? {
-       if selectedCategoryIndex < categories.count, indexPath.row < categories[selectedCategoryIndex].options.count {
+    func option(for indexPath: IndexPath) -> FilterOption? {
+        if selectedCategoryIndex < categories.count, indexPath.row < categories[selectedCategoryIndex].options.count {
            return categories[selectedCategoryIndex].options[indexPath.row]
-       }
-       return nil
-   }
+        }
+    return nil
+    }
 
-   func indexFor(category: String) -> Int? {
-       return categories.firstIndex {  $0.title == category }
-   }
+    func indexFor(category: String) -> Int? {
+        return categories.firstIndex {  $0.title == category }
+    }
 
-   func didSelectOption(at indexPath: IndexPath) {
-       // Clear all selections in the language category
-       guard selectedCategoryIndex < categories.count  else {
+    func didSelectOption(at indexPath: IndexPath) {
+        // Clear all selections in the language category
+        guard selectedCategoryIndex < categories.count  else {
             return
-       }
-       
-       if categories[selectedCategoryIndex].title != Constants.FilterCategories.sources {
+        }
+
+        if categories[selectedCategoryIndex].title != Constants.FilterCategories.sources {
            clearOptionsForCategory(at: selectedCategoryIndex)
-       }
-       
-       handleSelectionForSources() // as per API doc mixing sources with country or category is not allowed
-       
-       var category = categories[selectedCategoryIndex]
-       category.options[indexPath.row].isSelected.toggle()
-       categories[selectedCategoryIndex] = category
-       filterOptionsUpdated?()
-   }
-    
-   func handleSelectionForSources() {
-       if categories[selectedCategoryIndex].title == Constants.FilterCategories.sources {
+        }
+
+        handleSelectionForSources() // as per API doc mixing sources with country or category is not allowed
+
+        var category = categories[selectedCategoryIndex]
+        category.options[indexPath.row].isSelected.toggle()
+        categories[selectedCategoryIndex] = category
+        filterOptionsUpdated?()
+    }
+
+    func handleSelectionForSources() {
+        if categories[selectedCategoryIndex].title == Constants.FilterCategories.sources {
             //clear selection for category and country
            if let indexForCategory = indexFor(category: Constants.FilterCategories.category) {
                 clearOptionsForCategory(at: indexForCategory)
@@ -163,32 +163,32 @@ final class FilterViewModel {
            if let indexForCountry = indexFor(category: Constants.FilterCategories.country) {
                 clearOptionsForCategory(at: indexForCountry)
             }
-       } else if categories[selectedCategoryIndex].title == Constants.FilterCategories.category ||  categories[selectedCategoryIndex].title == Constants.FilterCategories.country{
+        } else if categories[selectedCategoryIndex].title == Constants.FilterCategories.category ||  categories[selectedCategoryIndex].title == Constants.FilterCategories.country{
             //clear selection for sources
            if let indexForSources = indexFor(category: Constants.FilterCategories.sources) {
                 clearOptionsForCategory(at: indexForSources)
             }
         }
-  }
+    }
 
-  func clearAllFilters() {
+    func clearAllFilters() {
         for (index, _) in categories.enumerated() {
             clearOptionsForCategory(at: index)
         }
         // Notify that options are updated after clearing all filters
         filterOptionsUpdated?()
-  }
+    }
 
- func clearOptionsForCategory(at index: Int) {
+    func clearOptionsForCategory(at index: Int) {
         guard index < categories.count else { return }
         let category = categories[index]
 
         for (optionIndex, _) in category.options.enumerated() {
             categories[index].options[optionIndex].isSelected = false
         }
-  }
+    }
 
-  func getSelectedOptions() -> [String: [String]] {
+    func getSelectedOptions() -> [String: [String]] {
         var selectedOptions: [String: [String]] = [:]
 
         for category in categories {
@@ -197,5 +197,13 @@ final class FilterViewModel {
         }
 
         return selectedOptions
-  }
+    }
+    
+    func setSelectedCategoryIndex(_ index: Int) {
+        selectedCategoryIndex = index
+    }
+    
+    func getSelectedCategoryIndex() -> Int {
+        return selectedCategoryIndex
+    }
 }

@@ -8,18 +8,18 @@
 import XCTest
 
 final class NewsListViewModelTests: XCTestCase {
-    var viewModel: NewsListViewModel = NewsListViewModel(newsUseCase: MockNewsAPI())
+    var viewModel: NewsListViewModel = NewsListViewModel(newsUseCase: MockNewsUseCase())
 
     func testConfigure() {
         let payload: [String: Any] = [Constants.PayloadKeys.category: "Technology"]
 
         viewModel.configure(payload: payload)
 
-        XCTAssertEqual(viewModel.selectedCategory, "Technology")
+        XCTAssertEqual(viewModel.getSelectedCategory(), "Technology")
     }
 
     func testGetAPIParameters() {
-        viewModel.selectedFilterOptions = ["Language": ["English", "Spanish"]]
+        viewModel.setSelectedFilterOptions(selectedOptions: ["Language": ["English", "Spanish"]])
 
         let parameters = viewModel.getAPIParameters()
 
@@ -29,15 +29,15 @@ final class NewsListViewModelTests: XCTestCase {
     }
 
     func testFetchNews() {
-        viewModel.selectedCategory = "Technology"
-        viewModel.selectedSortOption = .relevancy
-        viewModel.selectedFilterOptions = ["Language": ["English", "Spanish"], "Category": ["Sports"]]
+        viewModel.setSelectedCategory("Technology")
+        viewModel.handleSortSelection(option: .relevancy)
+        viewModel.setSelectedFilterOptions(selectedOptions: ["Language": ["English", "Spanish"], "Category": ["Sports"]])
         
         let expectation = self.expectation(description: "Fetch Trending News")
 
         viewModel.fetchNews()
-            .done { trendingNews in
-                XCTAssertEqual(trendingNews.count, 5)
+            .done { [weak self] in
+                XCTAssertEqual(self?.viewModel.numberOfRows(), 5)
                 expectation.fulfill()
             }
             .catch { error in
@@ -49,26 +49,23 @@ final class NewsListViewModelTests: XCTestCase {
     }
 
     func testResetPagination() {
-        viewModel.currentPage = 5
-        viewModel.newsArticles = [NewsArticle]()
-
         viewModel.resetPagination()
 
-        XCTAssertEqual(viewModel.currentPage, 1)
-        XCTAssertTrue(viewModel.newsArticles.isEmpty)
+        XCTAssertEqual(viewModel.getCurrentPage(), 1)
+        XCTAssertEqual(viewModel.numberOfRows(), 0)
     }
 
     func testHandleSortSelection() {
-        viewModel.selectedSortOption = .popularity
+        viewModel.handleSortSelection(option: .popularity)
         viewModel.handleSortSelection(option: .relevancy)
 
-        XCTAssertEqual(viewModel.selectedSortOption, .relevancy)
+        XCTAssertEqual(viewModel.getSelectedSortOption(), .relevancy)
     }
 
     
     func testSortOptionTitle() {
-        viewModel.selectedSortOption = .popularity
-        XCTAssertEqual(viewModel.selectedSortOption.title(), "Popularity")
+        viewModel.handleSortSelection(option: .popularity)
+        XCTAssertEqual(viewModel.getSelectedSortOption().title(), "Popularity")
         XCTAssertEqual(SortOption.relevancy.title(), "Relevancy")
         XCTAssertEqual(SortOption.publishedAt.title(), "Published At")
     }

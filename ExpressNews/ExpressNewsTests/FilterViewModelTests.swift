@@ -9,7 +9,7 @@ import XCTest
 
 final class FilterViewModelTests: XCTestCase {
     
-    var viewModel = FilterViewModel(filterOptionsUseCase: MockFilterOptionsAPI())
+    var viewModel = FilterViewModel(filterOptionsUseCase: MockFilterOptionsUseCase())
 
     func testSetupCategories() {
         let expectation = self.expectation(description: "Fetch filter options")
@@ -30,7 +30,7 @@ final class FilterViewModelTests: XCTestCase {
                 
                 
         //        testCategoryTitle
-            self?.viewModel.selectedCategoryIndex = 1
+            self?.viewModel.setSelectedCategoryIndex(1)
             var categoryTitle = self?.viewModel.categoryTitle(for: 1)
             XCTAssertEqual(categoryTitle, "Country")
                     
@@ -46,7 +46,7 @@ final class FilterViewModelTests: XCTestCase {
                 
                 
         //        testOption
-            self?.viewModel.selectedCategoryIndex = 1
+            self?.viewModel.setSelectedCategoryIndex(1)
 
             indexPath = IndexPath(row: 1, section: 0)
             var option = self?.viewModel.option(for: indexPath)

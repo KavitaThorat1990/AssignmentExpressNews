@@ -7,7 +7,7 @@
 
 import PromiseKit
 
-protocol FilterOptionsUseCase {
+protocol FilterOptionsUseCaseProtocol {
     func fetchSources() -> Promise<SourcesResponse>
     func loadCountries() -> Promise<[Country]>
     func loadLanguages() -> Promise<[Language]>

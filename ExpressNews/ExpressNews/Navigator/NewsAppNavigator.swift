@@ -7,10 +7,10 @@
 
 import UIKit
 
-class NewsAppCoordinator: Coordinator {
+class NewsAppNavigator: Navigator {
     var navigationController: UINavigationController
 
-    static let shared = NewsAppCoordinator()
+    static let shared = NewsAppNavigator()
 
     private init() {
         // Private initializer to ensure singleton
@@ -41,11 +41,6 @@ class NewsAppCoordinator: Coordinator {
         navigateTo(presentationStyle: presentationStyle, toViewController: newsDetailsViewController)
     }
     
-    func navigateToSearch(_ presentationStyle: PresentationStyle) {
-        let searchNewsVC = SearchNewsListViewController()
-        navigateTo(presentationStyle: presentationStyle, toViewController: searchNewsVC)
-    }
-    
     func navigateToNewsList(for category: String, presentationStyle: PresentationStyle) {
         let newsListVC = NewsListViewController()
         newsListVC.payload = [Constants.PayloadKeys.category: category]
@@ -57,6 +52,12 @@ class NewsAppCoordinator: Coordinator {
             presentedViewController.dismiss(animated: true, completion: nil)
         } else {
             navigationController.popViewController(animated: true)
+        }
+    }
+    
+    func openUrl(_ url: URL) {
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 }

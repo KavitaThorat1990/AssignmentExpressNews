@@ -14,19 +14,20 @@ struct NewsDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
-                Text(viewModel.newsArticle?.title ?? "")
+                Text(viewModel.newsTitle())
                     .font(.headline)
                     .lineLimit(nil)
+                    .accessibilityIdentifier("title")
                 
-                Text(viewModel.newsArticle?.authorAndSource ?? "")
+                Text(viewModel.newsAuthorAndSource())
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-                Text(viewModel.newsArticle?.updatedAt ?? "")
+                Text(viewModel.newsPublishedAt())
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-                if let imageUrl = viewModel.newsArticle?.imageUrl {
+                if let imageUrl = viewModel.newsImageUrl() {
                     WebImage(url: imageUrl)
                         .placeholder(Image(systemName: Constants.ImageNames.placeholder))
                         .resizable()
@@ -37,14 +38,14 @@ struct NewsDetailView: View {
                         .padding(.vertical, 8)
                 }
 
-                if let description = viewModel.newsArticle?.description {
+                if let description = viewModel.newsDescription() {
                     Text(description)
                         .font(.body)
                         .foregroundColor(.primary)
                         .lineLimit(nil)
                 }
                 
-                if let content = viewModel.newsArticle?.content {
+                if let content = viewModel.newsContent() {
                     Text(content)
                         .font(.body)
                         .foregroundColor(.primary)
@@ -54,8 +55,8 @@ struct NewsDetailView: View {
                 HStack {
                     Spacer()
                     Button(Constants.ButtonTitles.seeMore) {
-                        viewModel.openNewsURLClosure?()
-                    }
+                        viewModel.openNewsURL()
+                    }.accessibilityIdentifier(Constants.AccessibilityIds.seeMoreButton)
                     .foregroundColor(.blue)
                     .padding(.top, 8)
                 }

@@ -16,13 +16,6 @@ final class NewsDetailsViewModelTests: XCTestCase {
 
         viewModel.configure(payload: payload)
 
-        XCTAssertEqual(viewModel.newsArticle, newsArticle)
-    }
-
-}
-
-extension NewsArticle: Equatable {
-    static func == (lhs: NewsArticle, rhs: NewsArticle) -> Bool {
-        return lhs.url == rhs.url
+        XCTAssertEqual(viewModel.newsUrl(), newsArticle.url)
     }
 }

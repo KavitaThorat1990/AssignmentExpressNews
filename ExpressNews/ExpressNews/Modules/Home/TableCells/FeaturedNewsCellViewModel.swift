@@ -8,12 +8,10 @@
 import Foundation
 
 final class FeaturedNewsCellViewModel {
-    var newsArticles: [NewsArticle] = []
-    var openNewsDetails: ((NewsArticle) -> Void)?
+    private var newsArticles: [NewsArticle] = []
     
-    init(newsArticles: [NewsArticle] = [], openNewsDetails: ((NewsArticle) -> Void)? = nil) {
+    init(newsArticles: [NewsArticle] = []) {
         self.newsArticles = newsArticles
-        self.openNewsDetails = openNewsDetails
     }
 
     func configure(payload: [String: Any]) {
@@ -31,5 +29,11 @@ final class FeaturedNewsCellViewModel {
             return nil
         }
         return newsArticles[index]
+    }
+    
+    func didSelectItemAt(indexPath: IndexPath) {
+        if let news = self.getNewsForRow(index: indexPath.item) {
+            NewsAppNavigator.shared.navigateToNewsDetails(news, presentationStyle: .push)
+        }
     }
 }
