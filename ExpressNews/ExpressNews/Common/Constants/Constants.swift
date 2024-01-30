@@ -9,7 +9,7 @@ import Foundation
 
 struct Constants {
     
-    static let defaultCategories = ["Sports", "Entertainment"] //, "Entertainment", "Technology", "Business", "Science", "Health", "General"]
+    static let defaultCategories = ["Health", "Entertainment"] // "Entertainment", "Technology", "Business", "Science", "Health", "Sports", "General"]
     static let pageSizeForFeatured = 10
     static let pageSizeForHome = 5
     static let pageSizeForNewsList = 20

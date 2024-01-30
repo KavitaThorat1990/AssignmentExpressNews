@@ -9,7 +9,7 @@ import Foundation
 import PromiseKit
 
 //enum for sorting options
-enum SortOption: String {
+enum SortOption: String, CaseIterable {
     case relevancy
     case popularity
     case publishedAt
@@ -26,7 +26,6 @@ enum SortOption: String {
 
 final class NewsListViewModel {
     private var newsArticles: [NewsArticle] = []
-    private let sortingOptions: [SortOption] = [.relevancy, .popularity, .publishedAt]
     private var selectedCategory: String = ""
     private var selectedSortOption: SortOption = .publishedAt
     private var selectedFilterOptions: [String: [String]] = [:]
@@ -83,28 +82,12 @@ final class NewsListViewModel {
     func handleSortSelection(option: SortOption) {
         self.selectedSortOption = option
     }
-    
-    func getSelectedSortOption() -> SortOption {
-        return selectedSortOption
-    }
-    
+ 
     func getNews(for index: Int) -> NewsArticle? {
         guard index < newsArticles.count else {
             return nil
         }
         return newsArticles[index]
-    }
-    
-    func getSelectedCategory() -> String {
-        return selectedCategory
-    }
-    
-    func getCurrentPage() -> Int {
-        return currentPage
-    }
-    
-    func setSelectedCategory(_ category: String) {
-        selectedCategory = category
     }
     
     func setSelectedFilterOptions(selectedOptions: [String: [String]]) {
@@ -123,3 +106,25 @@ final class NewsListViewModel {
         return newsArticles.count
     }
 }
+
+
+#if TESTING
+extension NewsListViewModel {
+    func getSelectedCategory() -> String {
+        return selectedCategory
+    }
+    
+    func getSelectedSortOption() -> SortOption {
+        return selectedSortOption
+    }
+    
+    func getCurrentPage() -> Int {
+        return currentPage
+    }
+    
+    func setSelectedCategory(_ category: String) {
+        selectedCategory = category
+    }
+    
+}
+#endif

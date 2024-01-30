@@ -188,9 +188,7 @@ extension NewsListViewController {
     private func createSortActionSheet() {
         sortActionSheet = UIAlertController(title: Constants.ScreenTitles.sortBy, message: nil, preferredStyle: .actionSheet)
 
-        let sortingOptions: [SortOption] = [.relevancy, .popularity, .publishedAt]
-
-        for option in sortingOptions {
+        for option in SortOption.allCases {
             let action = UIAlertAction(title: option.title(), style: .default) { [weak self] _ in
                 self?.viewModel?.handleSortSelection(option: option)
                 // Reset page info and fetch news
