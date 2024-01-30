@@ -108,7 +108,7 @@ final class NewsListViewModel {
 }
 
 
-#if TESTING
+#if DEBUG
 extension NewsListViewModel {
     func getSelectedCategory() -> String {
         return selectedCategory
