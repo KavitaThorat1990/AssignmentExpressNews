@@ -85,7 +85,6 @@
 		FF88E2372B512CE200B339F7 /* NewsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF88E2362B512CE200B339F7 /* NewsCellViewModelTests.swift */; };
 		FF88E2382B512D2400B339F7 /* NewsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF88E2312B5123AC00B339F7 /* NewsCellViewModel.swift */; };
 		FF9887E32B3FF114001A8F43 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9887E22B3FF114001A8F43 /* AppDelegate.swift */; };
-		FF9887E52B3FF114001A8F43 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9887E42B3FF114001A8F43 /* SceneDelegate.swift */; };
 		FF9887EC2B3FF117001A8F43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF9887EB2B3FF117001A8F43 /* Assets.xcassets */; };
 		FF9887EF2B3FF117001A8F43 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF9887ED2B3FF117001A8F43 /* LaunchScreen.storyboard */; };
 		FF9888172B401527001A8F43 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9888162B401527001A8F43 /* HomeViewController.swift */; };
@@ -173,7 +172,6 @@
 		FF88E2362B512CE200B339F7 /* NewsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCellViewModelTests.swift; sourceTree = "<group>"; };
 		FF9887DF2B3FF114001A8F43 /* ExpressNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExpressNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF9887E22B3FF114001A8F43 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FF9887E42B3FF114001A8F43 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		FF9887EB2B3FF117001A8F43 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FF9887EE2B3FF117001A8F43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FF9887F02B3FF117001A8F43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -333,7 +331,6 @@
 			isa = PBXGroup;
 			children = (
 				FF9887E22B3FF114001A8F43 /* AppDelegate.swift */,
-				FF9887E42B3FF114001A8F43 /* SceneDelegate.swift */,
 				FF3F0B1D2B5679190044D115 /* Configuration */,
 				FF98885F2B453BDB001A8F43 /* Resources */,
 				FF9888202B4025AD001A8F43 /* Models */,
@@ -676,7 +673,6 @@
 				FF9888282B402B26001A8F43 /* FeaturedNewsItemCell.swift in Sources */,
 				FF3F0B292B56899A0044D115 /* MockAPIError.swift in Sources */,
 				FF3F0B3A2B5FA1950044D115 /* NewsListViewController.swift in Sources */,
-				FF9887E52B3FF114001A8F43 /* SceneDelegate.swift in Sources */,
 				FF3F0B3B2B5FBCFE0044D115 /* NewsAppNavigator.swift in Sources */,
 				FFC8736A2B4EA0210080915E /* NewsTitleView.swift in Sources */,
 				FF88E22B2B500B7300B339F7 /* FeaturedNewsCellViewModel.swift in Sources */,
