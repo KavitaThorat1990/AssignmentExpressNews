@@ -16,9 +16,18 @@ struct NewsCell: View {
         HStack(alignment: .top, spacing: 8) {
             // Image View
             if let imageUrl = cellViewModel.newsImageUrl() {
-                WebImage(url: imageUrl)
-                    .placeholder(Image(systemName: Constants.ImageNames.placeholder))
-                    .resizable()
+//                WebImage(url: imageUrl)
+//                    .placeholder(Image(systemName: Constants.ImageNames.placeholder))
+                    AsyncImage(url: imageUrl) { phase in
+                         if let image = phase.image {
+                             image
+                                 .resizable()
+                         } else {
+                             Image(systemName: "photo.fill")
+                                 .resizable()
+                                 .scaledToFill()
+                         }
+                     }
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 80, height: 80)
                     .cornerRadius(8)
