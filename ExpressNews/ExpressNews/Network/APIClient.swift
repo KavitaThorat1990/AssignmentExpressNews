@@ -8,10 +8,14 @@
 import Foundation
 import PromiseKit
 
-class APIClient {
+class APIClient: NSObject {
     static let shared = APIClient()
-
-    private init() {
+    private lazy var urlSession: URLSession = {
+            let configuration = URLSessionConfiguration.default
+            return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        }()
+    
+    private override init() {
         // Private initializer to ensure singleton
     }
     
@@ -34,7 +38,7 @@ class APIClient {
             var request = URLRequest(url: url)
             request.addValue(AppConfiguration.apiKey, forHTTPHeaderField: APIConstants.Header.apiKeyHeader)
 
-            URLSession.shared.dataTask(with: request) { (data, response, error) in
+            urlSession.dataTask(with: request) { (data, response, error) in
                 if let error = error {
                     seal.reject(APIError.requestFailed(error))
                     return
@@ -66,4 +70,43 @@ class APIClient {
             }.resume()
         }
     }
+    
+    func downloadImage(from url: URL) -> Promise<Data> {
+        return Promise { seal in
+            
+            let task = urlSession.dataTask(with: url) { data, _, error in
+                if let error = error {
+                    seal.reject(error)
+                    return
+                }
+
+                guard let imageData = data else {
+                    seal.reject(APIError.invalidResponse)
+                    return
+                }
+
+                seal.fulfill(imageData)
+            }
+
+            task.resume()
+        }
+    }
 }
+
+extension APIClient: URLSessionDelegate {
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+
+        let protectionSpace = challenge.protectionSpace
+    
+        guard let serverTrust = protectionSpace.serverTrust else {
+            completionHandler(.useCredential, nil)
+            return
+        }
+
+        let credential = URLCredential(trust: serverTrust)
+        completionHandler(.useCredential, credential)
+    }
+}
+
+
+

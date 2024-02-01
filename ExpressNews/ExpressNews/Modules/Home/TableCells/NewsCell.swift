@@ -5,40 +5,19 @@
 //  Created by Kavita Thorat on 31/12/23.
 //
 
-import SDWebImage
-import SDWebImageSwiftUI
 import SwiftUI
 
 struct NewsCell: View {
-    var cellViewModel: NewsCellViewModel
+    @ObservedObject var cellViewModel: NewsCellViewModel
 
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             // Image View
-            if let imageUrl = cellViewModel.newsImageUrl() {
-//                WebImage(url: imageUrl)
-//                    .placeholder(Image(systemName: Constants.ImageNames.placeholder))
-                    AsyncImage(url: imageUrl) { phase in
-                         if let image = phase.image {
-                             image
-                                 .resizable()
-                         } else {
-                             Image(systemName: "photo.fill")
-                                 .resizable()
-                                 .scaledToFill()
-                         }
-                     }
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 80, height: 80)
-                    .cornerRadius(8)
-            } else {
-                Image(systemName: Constants.ImageNames.placeholder)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 80, height: 80)
-                    .cornerRadius(8)
-                    .foregroundColor(.gray)
-            }
+            Image(uiImage: cellViewModel.downloadedImage)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 80, height: 80)
+                .cornerRadius(8)
 
             VStack(alignment: .leading, spacing: 5) {
                 Text(cellViewModel.newsTitle())

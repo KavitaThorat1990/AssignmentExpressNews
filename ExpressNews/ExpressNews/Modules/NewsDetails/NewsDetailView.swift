@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
 
 struct NewsDetailView: View {
-    var viewModel: NewsDetailsViewModel
+   @ObservedObject var viewModel: NewsDetailsViewModel
 
     var body: some View {
         ScrollView {
@@ -27,9 +26,8 @@ struct NewsDetailView: View {
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-                if let imageUrl = viewModel.newsImageUrl() {
-                    WebImage(url: imageUrl)
-                        .placeholder(Image(systemName: Constants.ImageNames.placeholder))
+                if let image = viewModel.downloadedImage {
+                    Image(uiImage: image)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(maxWidth: .infinity, maxHeight: 200)

@@ -5,30 +5,19 @@
 //  Created by Kavita Thorat on 30/12/23.
 //
 
-import SDWebImage
-import SDWebImageSwiftUI
 import SwiftUI
 
 struct FeaturedNewsItemCell: View {
-    var cellViewModel: NewsCellViewModel
+    @ObservedObject var cellViewModel: NewsCellViewModel
     @State private var titleHeight: CGFloat = 0
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
 
-            if let imageUrl = cellViewModel.newsImageUrl() {
-                WebImage(url:imageUrl)
-                    .placeholder( Image(systemName: Constants.ImageNames.placeholder))
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: .infinity, maxHeight: 200)
-            } else {
-                Image(systemName: Constants.ImageNames.placeholder)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: .infinity, maxHeight: 200)
-                    .foregroundColor(.gray)
-            }
+            Image(uiImage: cellViewModel.downloadedImage)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(maxWidth: .infinity, maxHeight: 200)
             
             NewsTitleView(title: cellViewModel.newsTitle())
                 .background(
