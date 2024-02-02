@@ -24,15 +24,3 @@ final class StringExtensionTests: XCTestCase {
         XCTAssertEqual(formattedString, invalidDateString)
     }
 }
-
-
-extension ImageCache {
-    var testMaxItemsCount: Int {
-        get {
-            return maxItemsCount
-        }
-        set {
-            maxItemsCount = newValue
-        }
-    }
-}

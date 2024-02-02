@@ -94,17 +94,15 @@ class APIClient: NSObject {
 }
 
 extension APIClient: URLSessionDelegate {
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-
-        let protectionSpace = challenge.protectionSpace
-    
-        guard let serverTrust = protectionSpace.serverTrust else {
-            completionHandler(.useCredential, nil)
-            return
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {        
+        if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+            if let serverTrust = challenge.protectionSpace.serverTrust {
+                let credential = URLCredential(trust: serverTrust)
+                completionHandler(.useCredential, credential)
+                return
+            }
         }
-
-        let credential = URLCredential(trust: serverTrust)
-        completionHandler(.useCredential, credential)
+        completionHandler(.performDefaultHandling, nil)
     }
 }
 
